@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "340652921101",
+    "project_id": "trainingplanner-340f6",
+    "storage_bucket": "trainingplanner-340f6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:340652921101:android:28a0e1ae129cda75d5a044",
+        "android_client_info": {
+          "package_name": "com.example.trainingplanner"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAXRGUQiZAxK4Jhop7Mfc0Y5Sa-p5MCB2o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
