@@ -26,6 +26,7 @@ object UserRepository {
     }
 
     fun getCurrentUserId(): String? {
+        Firebase.auth.currentUser?.metadata
         return Firebase.auth.currentUser?.uid
     }
 

@@ -66,8 +66,8 @@ In a full app, a user could be a member of one group and an organizer of another
 #### Splash Screen
 
 Same as in Assignment 4.
-Maybe create a cool logo for the Splash Screen.
 After a few seconds, directs to the Login screen or Dashboard, depending on if the user is logged in.
+* [ ] Maybe create a cool logo for the Splash Screen.
 
 #### Launch Screen
 
@@ -145,6 +145,15 @@ Save user's email and password.
 Similar to Assignment 4.
 Save and update a group's training plan.
 Send training plan info to user upon login.
+
+* Should I create 3 separate collections (Groups, TrainingPlan, and Workouts) or nest them inside each other?
+* Collections:
+  * Each Group is assigned an id which its TrainingPlan has saved and each TrainingPlan has an id which its Workouts have saved.
+  * This would work very closely to how we learned to use Firebase, and how I think it should be used.
+  * Each User would just add 10-100 Workouts to the collection? Is that an issue?
+* Nesting:
+  * Group has a variable `trainingPlan` that has TrainingPlan info, `trainingPlan` has List of Workouts.
+  * Might be simpler to access variables, but nesting makes it a bit less robust.
 
 ### Monetization Strategy
 
