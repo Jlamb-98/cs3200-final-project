@@ -1,7 +1,9 @@
 package com.example.trainingplanner.ui.repositories
+import com.example.trainingplanner.ui.models.User
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.tasks.await
 
@@ -25,8 +27,19 @@ object UserRepository {
         }
     }
 
+    suspend fun editUserName(name: String) {
+        val username = User(
+            id = getCurrentUserId(),
+            name = name
+        )
+        Firebase.firestore
+            .collection("users")
+            .document(Firebase.auth.currentUser?.uid!!)
+            .set(username)
+            .await()
+    }
+
     fun getCurrentUserId(): String? {
-        Firebase.auth.currentUser?.metadata
         return Firebase.auth.currentUser?.uid
     }
 

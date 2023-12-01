@@ -139,6 +139,8 @@ It also allows storage of training plans and allows group Members to view inform
 
 Similar to Assignment 4.
 Save user's email and password.
+I think I will need a Users collection in Firestore.
+This will allow me to store data about users: which training plan they are a part of, their role, user id.
 
 #### Storing/Accessing Training Plan
 
