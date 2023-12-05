@@ -27,7 +27,7 @@ object WorkoutsRepository {
         if (!cacheInitialized) {
             cacheInitialized = true
             val snapshot = Firebase.firestore
-                .collection("trainingPlans")
+                .collection("workouts")
                 .whereEqualTo("id", user?.trainingPlanId)
 //                .whereArrayContains("members", UserRepository.getCurrentUserId()!!)
                 .get()

@@ -2,10 +2,12 @@ package com.example.trainingplanner.ui.navigation
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.Divider
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ModalDrawerSheet
@@ -27,12 +29,14 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.trainingplanner.ui.repositories.UserRepository
 import com.example.trainingplanner.ui.screens.DashboardScreen
 import com.example.trainingplanner.ui.screens.LaunchScreen
 import com.example.trainingplanner.ui.screens.SignInScreen
 import com.example.trainingplanner.ui.screens.SignUpScreen
 import com.example.trainingplanner.ui.screens.SplashScreen
+import com.example.trainingplanner.ui.screens.WorkoutEditorScreen
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -50,6 +54,7 @@ fun RootNavigation() {
 
     ModalNavigationDrawer(
         drawerState = drawerState,
+        gesturesEnabled = drawerState.isOpen,
         drawerContent = {
             ModalDrawerSheet {
                 Text("Menu", modifier = Modifier.padding(16.dp))
@@ -92,6 +97,13 @@ fun RootNavigation() {
                         }
                     )
                 }
+            },
+            floatingActionButton = {
+                if (currentDestination?.route == Routes.dashboard.route) {
+                    FloatingActionButton(onClick = { navController.navigate(Routes.workoutEditor.route) }) {
+                        Icon(imageVector = Icons.Default.Add, contentDescription = "Workout Edit")
+                    }
+                }
             }
         ) {
             NavHost(
@@ -108,7 +120,11 @@ fun RootNavigation() {
                     composable(route = Routes.dashboard.route) { DashboardScreen(navController) }
 //                    composable(route = Routes.invite.route) { InviteScreen(navController) }
 //                    composable(route = Routes.planEditor.route) { PlanEditorScreen(navController) }
-//                    composable(route = Routes.workoutEditor.route) { WorkoutEditorScreen(navController) }
+                    composable(route = Routes.workoutEditor.route,
+                        arguments = listOf(navArgument("id") { defaultValue = "new" })
+                    ) { navBackStackEntry ->
+                        WorkoutEditorScreen(navController, navBackStackEntry.arguments?.getString("id"))
+                    }
 //                    composable(route = Routes.payment.route) { PaymentScreen(navController) }
                 }
                 composable(route = Routes.splashScreen.route) { SplashScreen(navController) }
