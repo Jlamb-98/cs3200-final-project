@@ -107,6 +107,7 @@ An Organizer can edit workouts.
 
 * Workout title
 * Description
+* Date
 * What else???
 
 #### Create Training Plan

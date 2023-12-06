@@ -6,7 +6,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -24,6 +26,7 @@ import com.example.trainingplanner.ui.navigation.Routes
 import com.example.trainingplanner.ui.viewmodels.WorkoutEditorViewModel
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WorkoutEditorScreen(navHostController: NavHostController, id: String?) {
     val viewModel: WorkoutEditorViewModel = viewModel()
@@ -46,7 +49,7 @@ fun WorkoutEditorScreen(navHostController: NavHostController, id: String?) {
                     .fillMaxWidth()
                     .padding(16.dp)
             ) {
-//                Text(text = state.title, style = MaterialTheme.typography.headlineSmall)    
+                Text(text = state.heading, style = MaterialTheme.typography.headlineSmall)
                 FormField(
                     value = state.title,
                     onValueChange = { state.title = it },
@@ -59,24 +62,40 @@ fun WorkoutEditorScreen(navHostController: NavHostController, id: String?) {
                     placeholder = { Text("Description") },
                     error = state.descriptionError
                 )
-                FormField(
-                    value = state.day,
-                    onValueChange = { state.day = it },
-                    placeholder = { Text("Day") },
-                    error = state.dayError
-                )
-                FormField(
-                    value = state.month,
-                    onValueChange = { state.month = it },
-                    placeholder = { Text("Month") },
-                    error = state.monthError
-                )
-                FormField(
-                    value = state.year,
-                    onValueChange = { state.year = it },
-                    placeholder = { Text("Year") },
-                    error = state.yearError
-                )
+                Row(
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    OutlinedTextField(
+                        modifier = Modifier
+                            .padding(horizontal = 4.dp)
+                            .weight(1f),
+                        value = state.day,
+                        onValueChange = { viewModel.updateDay(it) },
+                        placeholder = { Text("") },
+                        label = { Text("Day") },
+                        isError = state.dayError
+                    )
+                    OutlinedTextField(
+                        modifier = Modifier
+                            .padding(horizontal = 4.dp)
+                            .weight(1f),
+                        value = state.month,
+                        onValueChange = { viewModel.updateMonth(it) },
+                        placeholder = { Text("") },
+                        label = { Text("Month") },
+                        isError = state.monthError
+                    )
+                    OutlinedTextField(
+                        modifier = Modifier
+                            .padding(horizontal = 4.dp)
+                            .weight(1f),
+                        value = state.year,
+                        onValueChange = { viewModel.updateYear(it) },
+                        placeholder = { Text("") },
+                        label = { Text("Year") },
+                        isError = state.yearError
+                    )
+                }
 
                 Row(
                     horizontalArrangement = Arrangement.End,

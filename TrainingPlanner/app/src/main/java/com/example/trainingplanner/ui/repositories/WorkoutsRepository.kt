@@ -41,7 +41,7 @@ object WorkoutsRepository {
     }
 
     suspend fun createWorkout(
-        groupId: String,
+//        groupId: String,
         title: String,
         description: String,
         date: LocalDate
