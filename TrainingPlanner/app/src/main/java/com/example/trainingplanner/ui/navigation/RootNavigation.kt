@@ -36,6 +36,7 @@ import com.example.trainingplanner.ui.screens.LaunchScreen
 import com.example.trainingplanner.ui.screens.SignInScreen
 import com.example.trainingplanner.ui.screens.SignUpScreen
 import com.example.trainingplanner.ui.screens.SplashScreen
+import com.example.trainingplanner.ui.screens.TrainingPlanEditorScreen
 import com.example.trainingplanner.ui.screens.WorkoutEditorScreen
 import kotlinx.coroutines.launch
 
@@ -119,7 +120,7 @@ fun RootNavigation() {
                 navigation(route = Routes.appNavigation.route, startDestination = Routes.dashboard.route) {
                     composable(route = Routes.dashboard.route) { DashboardScreen(navController) }
 //                    composable(route = Routes.invite.route) { InviteScreen(navController) }
-//                    composable(route = Routes.planEditor.route) { PlanEditorScreen(navController) }
+                    composable(route = Routes.trainingPlanEditor.route) { TrainingPlanEditorScreen(navController) }
                     composable(route = Routes.workoutEditor.route,
                         arguments = listOf(navArgument("id") { defaultValue = "new" })
                     ) { navBackStackEntry ->

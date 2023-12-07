@@ -13,7 +13,7 @@ object Routes {
 
     val dashboard = Screen("dashboard")
     val invite = Screen("invite")
-    val planEditor = Screen("planeditor")
+    val trainingPlanEditor = Screen("planeditor")
     val workoutEditor = Screen("workouteditor")
     val payment = Screen("payment")
 
