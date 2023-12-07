@@ -37,6 +37,7 @@ import java.time.LocalDate
 public fun WorkoutPage(
     workout: Workout,
     offsetX: Float = 0f,
+    toggle: () -> Unit = {},
     onEditPressed: () -> Unit = {}
 ) {
     // TODO: Make this look nicer
@@ -60,8 +61,12 @@ public fun WorkoutPage(
                 style = MaterialTheme.typography.headlineMedium,
             )
             Text(text = workout.description ?: "No description")
-            Button(onClick = {}) {
-                Text(text = "Mark as Complete")
+            Button(onClick = toggle) {
+                if (!workout.userCompleted!!) {
+                    Text(text = "Mark as Complete")
+                } else {
+                    Text(text = "Undo Completion")
+                }
             }
             IconButton(onClick = onEditPressed, content = {
                 Icon(imageVector = Icons.Default.Edit, contentDescription = "Edit button")

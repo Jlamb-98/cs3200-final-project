@@ -2,8 +2,8 @@ package com.example.trainingplanner.ui.models
 
 data class User(
     val id: String? = null,
-    val name: String? = null,
     val username: String? = null,
-    val trainingPlanId: String? = "none",
-    val role: String? = "none"
+    val trainingPlanId: String? = null,
+    val role: String? = null,
+    // photo, first name
 )

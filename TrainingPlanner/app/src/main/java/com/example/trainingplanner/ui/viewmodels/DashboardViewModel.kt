@@ -28,6 +28,12 @@ class DashboardViewModel(application: Application): AndroidViewModel(application
         uiState.numWorkouts = uiState.workouts.size
     }
 
+    suspend fun toggleCompletion(workout: Workout) {
+        val workoutCopy = workout.copy(userCompleted = !(workout.userCompleted ?: false))
+        uiState._workouts[uiState._workouts.indexOf(workout)] = workoutCopy
+        WorkoutsRepository.updateWorkout(workoutCopy)
+    }
+
     suspend fun dragPage(change: Float) {
         uiState.translation.snapTo(
             uiState.translation.value + change

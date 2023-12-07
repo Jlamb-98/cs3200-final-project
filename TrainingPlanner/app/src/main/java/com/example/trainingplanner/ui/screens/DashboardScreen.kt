@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.input.pointer.positionChange
@@ -28,6 +29,7 @@ import java.time.LocalDate
 fun DashboardScreen(navHostController: NavHostController) {
     val viewModel: DashboardViewModel = viewModel()
     val state = viewModel.uiState
+    val scope = rememberCoroutineScope()
 
     LaunchedEffect(true) {
         viewModel.getWorkouts()
@@ -83,7 +85,12 @@ fun DashboardScreen(navHostController: NavHostController) {
                 if (state.numWorkouts > 0) {
                     WorkoutPage(
                         workout = state.workouts[state.currentWorkout],
-                        offsetX = state.translation.value
+                        offsetX = state.translation.value,
+                        toggle = {
+                            scope.launch {
+                                viewModel.toggleCompletion(state.workouts[state.currentWorkout])
+                            }
+                        }
                     )
                 }
                 if (state.currentWorkout < state.numWorkouts-1) {
