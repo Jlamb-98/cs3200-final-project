@@ -44,6 +44,12 @@ fun SignUpScreen(navHostController: NavHostController) {
             ) {
                 Text(text = "Create Account", style = MaterialTheme.typography.headlineSmall)
                 FormField(
+                    value = state.username,
+                    onValueChange = { state.username = it },
+                    placeholder = { Text("Username") },
+                    error = state.usernameError
+                )
+                FormField(
                     value = state.email,
                     onValueChange = { state.email = it },
                     placeholder = { Text("Email") },

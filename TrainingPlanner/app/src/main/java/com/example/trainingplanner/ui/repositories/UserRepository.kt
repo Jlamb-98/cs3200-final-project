@@ -11,11 +11,21 @@ class SignUpException(message: String?): RuntimeException(message)
 class SignInException(message: String?): RuntimeException(message)
 
 object UserRepository {
-    suspend fun createUser(email: String, password: String) {
+    suspend fun createUser(email: String, password: String, username: String) {
         try {
             Firebase.auth.createUserWithEmailAndPassword(email, password).await()
         } catch (e: FirebaseAuthException) {
             throw SignUpException(e.message)
+        } finally {
+            val user = User(
+                id = getCurrentUserId(),
+                username = username
+            )
+            Firebase.firestore
+                .collection("users")
+                .document(getCurrentUserId()!!)
+                .set(user)
+                .await()
         }
     }
 
@@ -27,15 +37,15 @@ object UserRepository {
         }
     }
 
-    suspend fun editUserName(name: String) {
-        val username = User(
+    suspend fun editUsername(username: String) {
+        val user = User(
             id = getCurrentUserId(),
-            name = name
+            username = username
         )
         Firebase.firestore
             .collection("users")
             .document(Firebase.auth.currentUser?.uid!!)
-            .set(username)
+            .set(user)
             .await()
     }
 
