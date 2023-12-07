@@ -6,7 +6,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.AndroidViewModel
 import com.example.trainingplanner.ui.repositories.WorkoutsRepository
+import com.google.firebase.Timestamp
+import java.time.Instant
 import java.time.LocalDate
+import java.time.ZoneId
 
 class WorkoutEditorScreenState {
     var title by mutableStateOf("")
@@ -45,9 +48,9 @@ class WorkoutEditorViewModel(application: Application): AndroidViewModel(applica
         val workout = WorkoutsRepository.getWorkouts().find { it.id == id } ?: return
         uiState.title = workout.title ?: ""
         uiState.description = workout.description ?: ""
-        uiState.day = "${workout.date?.dayOfMonth ?: 1}"
-        uiState.month = "${workout.date?.month ?: 1}"
-        uiState.year = "${workout.date?.year ?: 2000}"
+        uiState.day = "${workout.day ?: 1}"
+        uiState.month = "${workout.month ?: 1}"
+        uiState.year = "${workout.year ?: 2023}"
     }
 
     fun updateDay(input: String) {
@@ -107,12 +110,13 @@ class WorkoutEditorViewModel(application: Application): AndroidViewModel(applica
             return
         }
 
-        val date = LocalDate.parse("${uiState.day}-${uiState.month}-${uiState.year}")
         if (id == null || id == "new") {    // create new workout
             WorkoutsRepository.createWorkout(
                 uiState.title,
                 uiState.description,
-                date
+                uiState.day.toInt(),
+                uiState.month.toInt(),
+                uiState.year.toInt()
             )
         } else {    // update existing workout
             val workout = WorkoutsRepository.getWorkouts().find { it.id == id } ?: return
@@ -120,11 +124,24 @@ class WorkoutEditorViewModel(application: Application): AndroidViewModel(applica
                 workout.copy(
                     title = uiState.title,
                     description = uiState.description,
-                    date = date
+                    day = uiState.day.toInt(),
+                    month = uiState.month.toInt(),
+                    year = uiState.year.toInt()
                 )
             )
         }
 
         uiState.saveSuccess = true
     }
+
+//    private fun timestampToLocalDate(timestamp: Timestamp): LocalDate {
+//        val instant: Instant = timestamp.toDate().toInstant()
+//        return instant.atZone(ZoneId.systemDefault()).toLocalDate()
+//    }
+//
+//    private fun createTimestamp(year: Int, month: Int, day: Int): Timestamp {
+//        val localDate = LocalDate.of(year, month, day)
+//        val instant = localDate.atStartOfDay(ZoneId.systemDefault()).toInstant()
+//        return Timestamp(Date.from(instant))
+//    }
 }

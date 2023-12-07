@@ -2,6 +2,7 @@ package com.example.trainingplanner.ui.repositories
 
 import com.example.trainingplanner.ui.models.User
 import com.example.trainingplanner.ui.models.Workout
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.toObject
 import com.google.firebase.firestore.toObjects
@@ -17,18 +18,18 @@ object WorkoutsRepository {
         // 'users' collection contains documents for all users, each containing the user's id and their training plan's id
         // or can I somehow search the trainingPlan collections deeper for member id's???
         // i.e. `.contains("members", UserRepository.getCurrentUserId()!!)
-        val document = Firebase.firestore
-            .collection("users")
-            .document(UserRepository.getCurrentUserId()!!)
-            .get()
-            .await()
-        val user: User? = document.toObject()
+//        val document = Firebase.firestore
+//            .collection("users")
+//            .document(UserRepository.getCurrentUserId()!!)
+//            .get()
+//            .await()
+//        val user: User? = document.toObject()
 
         if (!cacheInitialized) {
             cacheInitialized = true
             val snapshot = Firebase.firestore
                 .collection("workouts")
-                .whereEqualTo("id", user?.trainingPlanId)
+                .whereEqualTo("userId", UserRepository.getCurrentUserId())
 //                .whereArrayContains("members", UserRepository.getCurrentUserId()!!)
                 .get()
                 .await()
@@ -44,15 +45,20 @@ object WorkoutsRepository {
 //        groupId: String,
         title: String,
         description: String,
-        date: LocalDate
+        day: Int,
+        month: Int,
+        year: Int
     ): Workout {
         val doc = Firebase.firestore.collection("workouts").document()
         val workout = Workout(
             id = doc.id,
+            userId = UserRepository.getCurrentUserId(),
 //            groupId = groupId,  //TODO: can I pass this value in or do I need to get it from Firebase??
             title = title,
             description = description,
-            date = date,
+            day = day,
+            month = month,
+            year = year,
             userCompleted = false,
 //            memberCompletion = mutableListOf(false) //TODO: does the number of members matter here??
         )

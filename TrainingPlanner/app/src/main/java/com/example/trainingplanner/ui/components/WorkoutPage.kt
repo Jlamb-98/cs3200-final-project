@@ -52,8 +52,7 @@ public fun WorkoutPage(
             verticalArrangement = Arrangement.SpaceEvenly,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            // TODO: Make this date look nicer
-            Text(text = workout.date.toString(), fontWeight = FontWeight.Bold)
+            Text(text = workout.getDate(), fontWeight = FontWeight.Bold)
 
             Text(
                 text = workout.title ?: "No title",
@@ -81,7 +80,9 @@ fun WorkoutPagePreview() {
             userId = "abc",
             title = "4 mile run",
             description = "go on a 4 mile run",
-            date = LocalDate.parse("1998-02-14"),
+            day = 1,
+            month = 2,
+            year = 2023,
             userCompleted = false
         ))
     }

@@ -62,6 +62,7 @@ fun WorkoutEditorScreen(navHostController: NavHostController, id: String?) {
                     placeholder = { Text("Description") },
                     error = state.descriptionError
                 )
+
                 Row(
                     modifier = Modifier.fillMaxWidth()
                 ) {

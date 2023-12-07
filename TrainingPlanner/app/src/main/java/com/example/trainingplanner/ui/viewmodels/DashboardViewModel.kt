@@ -22,6 +22,7 @@ class DashboardViewModel(application: Application): AndroidViewModel(application
 
     suspend fun getWorkouts() {
         val workouts = WorkoutsRepository.getWorkouts()
+        println("getting workouts")
         uiState._workouts.clear()
         uiState._workouts.addAll(workouts)
         uiState.numWorkouts = uiState.workouts.size
@@ -46,9 +47,13 @@ class DashboardViewModel(application: Application): AndroidViewModel(application
     suspend fun animateToCenter() {
         var snapValue = 0f
         if (uiState.translation.value > uiState.OFFSET / 2) {
-            snapValue = uiState.OFFSET
+            if (uiState.currentWorkout > 0) {
+                snapValue = uiState.OFFSET
+            }
         } else if (uiState.translation.value < -uiState.OFFSET / 2) {
-            snapValue = -uiState.OFFSET
+            if (uiState.currentWorkout < uiState.numWorkouts - 1) {
+                snapValue = -uiState.OFFSET
+            }
         }
         uiState.translation.animateTo(
             snapValue,

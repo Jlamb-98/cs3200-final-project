@@ -74,39 +74,24 @@ fun DashboardScreen(navHostController: NavHostController) {
                 }
         ) {
             Box() {
-                WorkoutPage(
-                    workout = Workout(
-                        id="123",
-                        userId="asdf",
-                        title="Run 1 mile",
-                        description = "As fast as you can",
-                        date = LocalDate.parse("2023-12-11"),
-                        userCompleted = false
-                    ),
-                    offsetX = state.translation.value-state.OFFSET
-                )
-                WorkoutPage(
-                    workout = Workout(
-                        id="123",
-                        userId="asdf",
-                        title="Run 1 mile",
-                        description = "As fast as you can",
-                        date = LocalDate.parse("2023-12-12"),
-                        userCompleted = false
-                    ),
-                    offsetX = state.translation.value
-                )
-                WorkoutPage(
-                    workout = Workout(
-                        id="123",
-                        userId="asdf",
-                        title="Run 1 mile",
-                        description = "As fast as you can",
-                        date = LocalDate.parse("2023-12-13"),
-                        userCompleted = false
-                    ),
-                    offsetX = state.translation.value+state.OFFSET
-                )
+                if (state.currentWorkout > 0) {
+                    WorkoutPage(
+                        workout = state.workouts[state.currentWorkout-1],
+                        offsetX = state.translation.value-state.OFFSET
+                    )
+                }
+                if (state.numWorkouts > 0) {
+                    WorkoutPage(
+                        workout = state.workouts[state.currentWorkout],
+                        offsetX = state.translation.value
+                    )
+                }
+                if (state.currentWorkout < state.numWorkouts-1) {
+                    WorkoutPage(
+                        workout = state.workouts[state.currentWorkout+1],
+                        offsetX = state.translation.value+state.OFFSET
+                    )
+                }
             }
         }
     }
