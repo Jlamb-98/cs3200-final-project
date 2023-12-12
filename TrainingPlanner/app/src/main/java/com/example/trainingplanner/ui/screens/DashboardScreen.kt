@@ -84,15 +84,15 @@ fun DashboardScreen(navHostController: NavHostController) {
                 }
         ) {
             Box() {
-//                    if (state.currentWorkout > 0) {
-//                        WorkoutPage(
-//                            workout = state.workouts[state.currentWorkout-1],
-//                            offsetX = state.translation.value-state.OFFSET
-//                        )
-//                    }
+                    if (state.currentWorkout > 0) {
+                        WorkoutPage(
+                            workout = viewModel.getCurrentWorkout(-1),
+                            offsetX = state.translation.value-state.OFFSET
+                        )
+                    }
                     if (state.numWorkouts > 0) {
                         WorkoutPage(
-                            workout = state.workouts.first(),
+                            workout = viewModel.getCurrentWorkout(0),
                             offsetX = state.translation.value,
                             toggle = {
                                 scope.launch {
@@ -101,12 +101,12 @@ fun DashboardScreen(navHostController: NavHostController) {
                             }
                         )
                     }
-//                    if (state.currentWorkout < state.numWorkouts-1) {
-//                        WorkoutPage(
-//                            workout = state.workouts[state.currentWorkout+1],
-//                            offsetX = state.translation.value+state.OFFSET
-//                        )
-//                    }
+                    if (state.currentWorkout < state.numWorkouts-1) {
+                        WorkoutPage(
+                            workout = viewModel.getCurrentWorkout(1),
+                            offsetX = state.translation.value+state.OFFSET
+                        )
+                    }
             }
         }
     }

@@ -35,12 +35,7 @@ import java.time.LocalDate
 
 @Composable
 public fun WorkoutPage(
-    workout: Workout = Workout(
-        day = 1,
-        month = 1,
-        year = 2000,
-        created = false
-    ),
+    workout: Workout,
     offsetX: Float = 0f,
     toggle: () -> Unit = {},
     onEditPressed: () -> Unit = {}
@@ -97,7 +92,8 @@ fun CreatedWorkoutPagePreview() {
             day = 1,
             month = 2,
             year = 2023,
-            userCompleted = false
+            userCompleted = false,
+            created = true
         ))
     }
 }

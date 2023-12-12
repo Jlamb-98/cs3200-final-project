@@ -3,14 +3,9 @@ package com.example.trainingplanner.ui.viewmodels
 import android.app.Application
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.spring
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.AndroidViewModel
-import com.example.trainingplanner.ui.models.User
 import com.example.trainingplanner.ui.models.Workout
-import com.example.trainingplanner.ui.repositories.UserRepository
 import com.example.trainingplanner.ui.repositories.WorkoutsRepository
 import java.time.LocalDate
 
@@ -20,7 +15,7 @@ class DashboardScreenState {
     val workouts: List<Workout> get() = _workouts
     var numWorkouts = 0
     var currentWorkout = 0
-    var selectedDate = LocalDate.now()
+    var selectedDate: LocalDate = LocalDate.now()
 
     val translation = Animatable(0f)
 }
@@ -34,6 +29,18 @@ class DashboardViewModel(application: Application): AndroidViewModel(application
         uiState._workouts.clear()
         uiState._workouts.addAll(workouts)
         uiState.numWorkouts = uiState.workouts.size
+    }
+
+    fun getCurrentWorkout(offset: Long): Workout {
+        println("getting current workout")
+        val date = uiState.selectedDate.plusDays(offset)
+        return uiState.workouts.find {
+            LocalDate.of(it.year!!, it.month!!, it.day!!) == date
+        } ?: Workout(
+            day = uiState.selectedDate.dayOfMonth,
+            month = uiState.selectedDate.monthValue,
+            year = uiState.selectedDate.year
+        )
     }
 
     suspend fun toggleCompletion(workout: Workout) {
@@ -51,9 +58,11 @@ class DashboardViewModel(application: Application): AndroidViewModel(application
     suspend fun updateCurrentWorkout() {
         if (uiState.translation.value >= uiState.OFFSET) {
             uiState.currentWorkout--
+            uiState.selectedDate.minusDays(1)
             uiState.translation.snapTo(0f)
         } else if (uiState.translation.value <= -uiState.OFFSET) {
             uiState.currentWorkout++
+            uiState.selectedDate.plusDays(1)
             uiState.translation.snapTo(0f)
         }
     }
