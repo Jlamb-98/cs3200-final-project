@@ -35,7 +35,12 @@ import java.time.LocalDate
 
 @Composable
 public fun WorkoutPage(
-    workout: Workout,
+    workout: Workout = Workout(
+        day = 1,
+        month = 1,
+        year = 2000,
+        created = false
+    ),
     offsetX: Float = 0f,
     toggle: () -> Unit = {},
     onEditPressed: () -> Unit = {}
@@ -50,39 +55,43 @@ public fun WorkoutPage(
     ) {
         Column(
             modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.SpaceEvenly,
+            verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(text = workout.getDate(), fontWeight = FontWeight.Bold)
 
-            Text(
-                text = workout.title ?: "No title",
-                fontWeight = FontWeight.Bold,
-                style = MaterialTheme.typography.headlineMedium,
-            )
-            Text(text = workout.description ?: "No description")
-            Button(onClick = toggle) {
-                if (!workout.userCompleted!!) {
-                    Text(text = "Mark as Complete")
-                } else {
-                    Text(text = "Undo Completion")
+            if (!workout.created!!) {
+                Button(onClick = { /*TODO edit workout screen*/ }) {
+                    Text("Create workout")
                 }
+            } else {
+                Text(
+                    text = workout.title ?: "No title",
+                    fontWeight = FontWeight.Bold,
+                    style = MaterialTheme.typography.headlineMedium,
+                )
+                Text(text = workout.description ?: "No description")
+                Button(onClick = toggle) {
+                    if (!workout.userCompleted!!) {
+                        Text(text = "Mark as Complete")
+                    } else {
+                        Text(text = "Undo Completion")
+                    }
+                }
+                IconButton(onClick = onEditPressed, content = {
+                    Icon(imageVector = Icons.Default.Edit, contentDescription = "Edit button")
+                })
+                // TODO: show list of members that have completed workout
             }
-            IconButton(onClick = onEditPressed, content = {
-                Icon(imageVector = Icons.Default.Edit, contentDescription = "Edit button")
-            })
-            // TODO: show list of members that have completed workout
         }
     }
 }
 
 @Preview
 @Composable
-fun WorkoutPagePreview() {
+fun CreatedWorkoutPagePreview() {
     TrainingPlannerTheme {
         WorkoutPage(workout = Workout(
-            id = "123",
-            userId = "abc",
             title = "4 mile run",
             description = "go on a 4 mile run",
             day = 1,
@@ -92,3 +101,11 @@ fun WorkoutPagePreview() {
         ))
     }
 }
+
+//@Preview
+//@Composable
+//fun NoWorkoutPagePreview() {
+//    TrainingPlannerTheme {
+//        WorkoutPage(workout = Workout())
+//    }
+//}

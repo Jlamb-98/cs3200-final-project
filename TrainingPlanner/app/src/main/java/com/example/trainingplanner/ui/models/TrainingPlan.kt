@@ -11,8 +11,8 @@ data class TrainingPlan(
     val eventName: String? = null,
     val eventDate: String? = null,
     val startDate: String? = null,
-    val members: List<String?> = mutableListOf(null),
-    val workouts: List<Workout?> = mutableListOf(null),
+//    val members: List<User?> = mutableListOf(null),   // add this in if members can join multiple plans
+//    val workouts: List<Workout?> = mutableListOf(null),
 //    val workoutsPerWeek: Int? = null,
 //    val restDaysPerWeek: Int? = null
 )

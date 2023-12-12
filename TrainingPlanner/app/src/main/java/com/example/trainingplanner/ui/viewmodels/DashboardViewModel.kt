@@ -3,17 +3,25 @@ package com.example.trainingplanner.ui.viewmodels
 import android.app.Application
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.spring
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.AndroidViewModel
+import com.example.trainingplanner.ui.models.User
 import com.example.trainingplanner.ui.models.Workout
+import com.example.trainingplanner.ui.repositories.UserRepository
 import com.example.trainingplanner.ui.repositories.WorkoutsRepository
+import java.time.LocalDate
 
 class DashboardScreenState {
-    val OFFSET = 1000f   // TODO: can my offset adjust based on screen size??
+    val OFFSET = 1000f   // TODO: does my offset adjust based on screen size??
     val _workouts = mutableStateListOf<Workout>()
     val workouts: List<Workout> get() = _workouts
     var numWorkouts = 0
     var currentWorkout = 0
+    var selectedDate = LocalDate.now()
+
     val translation = Animatable(0f)
 }
 

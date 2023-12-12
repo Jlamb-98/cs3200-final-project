@@ -1,6 +1,7 @@
 package com.example.trainingplanner.ui.repositories
 
 import com.example.trainingplanner.ui.models.TrainingPlan
+import com.example.trainingplanner.ui.models.User
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.toObject
 import com.google.firebase.ktx.Firebase

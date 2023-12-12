@@ -21,7 +21,14 @@ fun SplashScreen(navHostController: NavHostController) {
     LaunchedEffect(true) {
         delay(3000)
         navHostController.navigate(
-            if (UserRepository.getCurrentUserId() == null) Routes.launchNavigation.route else Routes.appNavigation.route) {
+            if (UserRepository.getCurrentUserId() == null) {
+                Routes.launchNavigation.route
+            } else if (UserRepository.getUser().trainingPlanId == null) {
+                Routes.newPlanScreen.route
+            } else {
+                Routes.appNavigation.route
+            }
+        ) {
             popUpTo(navHostController.graph.findStartDestination().id) {
                 inclusive = true
             }

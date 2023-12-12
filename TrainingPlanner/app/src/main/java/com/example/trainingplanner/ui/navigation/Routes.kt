@@ -11,6 +11,7 @@ object Routes {
     val signUp = Screen("signup")
     val splashScreen = Screen("splashscreen")
 
+    val newPlanScreen = Screen("newplan")
     val dashboard = Screen("dashboard")
     val invite = Screen("invite")
     val trainingPlanEditor = Screen("planeditor")

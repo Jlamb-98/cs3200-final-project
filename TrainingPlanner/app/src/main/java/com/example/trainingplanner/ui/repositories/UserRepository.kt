@@ -12,6 +12,9 @@ class SignUpException(message: String?): RuntimeException(message)
 class SignInException(message: String?): RuntimeException(message)
 
 object UserRepository {
+    private val userCache = User()
+    private var cacheInitialized = false
+
     suspend fun createUser(email: String, password: String, username: String) {
         try {
             Firebase.auth.createUserWithEmailAndPassword(email, password).await()
@@ -63,7 +66,7 @@ object UserRepository {
         return snapshot.toObject()!!
     }
 
-    suspend fun getUserTrainingPlan(): String? {
+    suspend fun getUserTrainingPlan(): String {
         val snapshot = Firebase.firestore // TODO: could create cache and get value from it
             .collection("users")
             .document(getCurrentUserId()!!)

@@ -33,6 +33,7 @@ import androidx.navigation.navArgument
 import com.example.trainingplanner.ui.repositories.UserRepository
 import com.example.trainingplanner.ui.screens.DashboardScreen
 import com.example.trainingplanner.ui.screens.LaunchScreen
+import com.example.trainingplanner.ui.screens.NewPlanScreen
 import com.example.trainingplanner.ui.screens.SignInScreen
 import com.example.trainingplanner.ui.screens.SignUpScreen
 import com.example.trainingplanner.ui.screens.SplashScreen
@@ -99,13 +100,13 @@ fun RootNavigation() {
                     )
                 }
             },
-            floatingActionButton = {
-                if (currentDestination?.route == Routes.dashboard.route) {
-                    FloatingActionButton(onClick = { navController.navigate(Routes.workoutEditor.route) }) {
-                        Icon(imageVector = Icons.Default.Add, contentDescription = "Workout Edit")
-                    }
-                }
-            }
+//            floatingActionButton = {
+//                if (currentDestination?.route == Routes.dashboard.route) {
+//                    FloatingActionButton(onClick = { navController.navigate(Routes.workoutEditor.route) }) {
+//                        Icon(imageVector = Icons.Default.Add, contentDescription = "Workout Edit")
+//                    }
+//                }
+//            }
         ) {
             NavHost(
                 navController = navController,
@@ -116,6 +117,7 @@ fun RootNavigation() {
                     composable(route = Routes.launch.route) { LaunchScreen(navController) }
                     composable(route = Routes.signIn.route) { SignInScreen(navController) }
                     composable(route = Routes.signUp.route) { SignUpScreen(navController) }
+                    composable(route = Routes.newPlanScreen.route) { NewPlanScreen(navController) }
                 }
                 navigation(route = Routes.appNavigation.route, startDestination = Routes.dashboard.route) {
                     composable(route = Routes.dashboard.route) { DashboardScreen(navController) }

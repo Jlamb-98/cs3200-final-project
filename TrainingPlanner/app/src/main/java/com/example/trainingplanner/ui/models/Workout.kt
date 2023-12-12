@@ -10,6 +10,7 @@ data class Workout(
     val day: Int? = null,
     val month: Int? = null,
     val year: Int? = null,
+    val created: Boolean? = false,
     val userCompleted: Boolean? = null,
 //    val memberCompletion: List<Boolean?> = mutableListOf(null)
 ) {
