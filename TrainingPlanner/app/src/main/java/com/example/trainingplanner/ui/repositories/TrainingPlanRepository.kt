@@ -15,8 +15,8 @@ object TrainingPlanRepository {
         // 'users' collection contains documents for all users, each containing the user's id and their training plan's id
         // or can I somehow search the trainingPlan collections deeper for member id's???
         // i.e. `.contains("members", UserRepository.getCurrentUserId()!!)
-        val document = Firebase.firestore
-            .collection("trainingplans")
+        val snapshot = Firebase.firestore
+            .collection("trainingPlans")
             .document(UserRepository.getUserTrainingPlan()!!)
             .get()
             .await()
@@ -33,8 +33,7 @@ object TrainingPlanRepository {
 //            // it has all data about the training plan
 //            workoutsCache.addAll(snapshot.toObjects())
 //        }
-
-        return document.toObject()
+        return snapshot.toObject()
     }
 
     suspend fun createTrainingPlan(
@@ -44,7 +43,7 @@ object TrainingPlanRepository {
         eventDate: String,
         startDate: String,
     ): TrainingPlan {
-        val doc = Firebase.firestore.collection("trainingplans").document()
+        val doc = Firebase.firestore.collection("trainingPlans").document()
         val code = generateRandomCode(6)    // TODO: could check for repeat code
         val trainingPlan = TrainingPlan(
             id = doc.id,

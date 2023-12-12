@@ -72,7 +72,7 @@ object UserRepository {
             .document(getCurrentUserId()!!)
             .get()
             .await()
-        return snapshot.get("trainingplanid").toString()
+        return snapshot.get("trainingPlanId").toString()
     }
 
     fun logout() {

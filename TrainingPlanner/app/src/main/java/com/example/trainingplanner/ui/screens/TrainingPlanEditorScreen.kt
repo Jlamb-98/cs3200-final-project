@@ -70,16 +70,16 @@ fun TrainingPlanEditorScreen(navHostController: NavHostController) {
                     error = state.eventNameError
                 )
                 FormField(
-                    value = state.eventDate,
-                    onValueChange = { state.eventDate = it },
-                    placeholder = { Text("Event Date") },
-                    error = state.eventDateError
-                )
-                FormField(
                     value = state.startDate,
                     onValueChange = { state.startDate = it },
                     placeholder = { Text("Start Date") },
                     error = state.startDateError
+                )
+                FormField(
+                    value = state.eventDate,
+                    onValueChange = { state.eventDate = it },
+                    placeholder = { Text("Event Date") },
+                    error = state.eventDateError
                 )
 
                 Row(

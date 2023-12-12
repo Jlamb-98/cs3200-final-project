@@ -40,6 +40,7 @@ fun DashboardScreen(navHostController: NavHostController) {
     val scope = rememberCoroutineScope()
 
     LaunchedEffect(true) {
+        viewModel.getTrainingPlan()
         viewModel.getWorkouts()
     }
     LaunchedEffect(state.translation.value >= state.OFFSET || state.translation.value <= -state.OFFSET) {
@@ -84,29 +85,29 @@ fun DashboardScreen(navHostController: NavHostController) {
                 }
         ) {
             Box() {
-                    if (state.currentWorkout > 0) {
-                        WorkoutPage(
-                            workout = viewModel.getCurrentWorkout(-1),
-                            offsetX = state.translation.value-state.OFFSET
-                        )
+                if (state.selectedDate > LocalDate.parse(state.trainingPlan.startDate)) {
+                    WorkoutPage(
+                        workout = state.workoutTuple[0],
+                        offsetX = state.translation.value-state.OFFSET
+                    )
+                }
+//                    if (state.selectedDate > 0) {
+                WorkoutPage(
+                    workout = state.workoutTuple[1],
+                    offsetX = state.translation.value,
+                    toggle = {
+                        scope.launch {
+                            viewModel.toggleCompletion(state.workouts[state.currentWorkout])
+                        }
                     }
-                    if (state.numWorkouts > 0) {
-                        WorkoutPage(
-                            workout = viewModel.getCurrentWorkout(0),
-                            offsetX = state.translation.value,
-                            toggle = {
-                                scope.launch {
-                                    viewModel.toggleCompletion(state.workouts[state.currentWorkout])
-                                }
-                            }
-                        )
-                    }
-                    if (state.currentWorkout < state.numWorkouts-1) {
-                        WorkoutPage(
-                            workout = viewModel.getCurrentWorkout(1),
-                            offsetX = state.translation.value+state.OFFSET
-                        )
-                    }
+                )
+//                    }
+                if (state.selectedDate < LocalDate.parse(state.trainingPlan.eventDate)) {
+                    WorkoutPage(
+                        workout = state.workoutTuple[2],
+                        offsetX = state.translation.value+state.OFFSET
+                    )
+                }
             }
         }
     }
