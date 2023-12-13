@@ -1,23 +1,26 @@
 package com.example.trainingplanner.ui.repositories
 
+import com.example.trainingplanner.ui.models.Member
 import com.example.trainingplanner.ui.models.TrainingPlan
 import com.example.trainingplanner.ui.models.User
+import com.example.trainingplanner.ui.models.Workout
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.toObject
+import com.google.firebase.firestore.toObjects
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.tasks.await
+import java.time.LocalDate
+import java.time.temporal.ChronoUnit
 
 object TrainingPlanRepository {
     private val trainingPlanCache = TrainingPlan()
     private var cacheInitialized = false
 
-    suspend fun getTrainingPlan(): TrainingPlan? {
+    suspend fun getTrainingPlan(id: String): TrainingPlan? {
         // 'users' collection contains documents for all users, each containing the user's id and their training plan's id
-        // or can I somehow search the trainingPlan collections deeper for member id's???
-        // i.e. `.contains("members", UserRepository.getCurrentUserId()!!)
         val snapshot = Firebase.firestore
             .collection("trainingPlans")
-            .document(UserRepository.getUserTrainingPlan()!!)
+            .document(id)
             .get()
             .await()
 
@@ -25,36 +28,37 @@ object TrainingPlanRepository {
     }
 
     suspend fun createTrainingPlan(
-        name: String,
-        description: String,
         eventName: String,
-        eventDate: String,
-        startDate: String,
+        description: String,
+        startDate: LocalDate,
+        eventDate: LocalDate,
     ): TrainingPlan {
-        val doc = Firebase.firestore.collection("trainingPlans").document()
+        // create empty workout list for time period
+        val workouts = mutableListOf<Workout>()
+        var currentDate = startDate
+        while (currentDate.isBefore(eventDate) || currentDate.isEqual(eventDate)) {
+            workouts.add(Workout(date = currentDate.toString()))
+            currentDate = currentDate.plusDays(1)
+        }
+
         val code = generateRandomCode(6)    // TODO: could check for repeat code
+        val doc = Firebase.firestore.collection("trainingPlans").document(code)
         val trainingPlan = TrainingPlan(
-//            id = doc.id,
-//            organizerId = UserRepository.getCurrentUserId(),
             code = code,
-            name = name,
-            description = description,
             eventName = eventName,
-            eventDate = eventDate,
-            startDate = startDate
+            description = description,
+            startDate = startDate.toString(),
+            eventDate = eventDate.toString(),
+            members = listOf(
+                Member(
+                    userId = UserRepository.getCurrentUserId(),
+                    role = "organizer"
+                )
+            ),
+            workouts = workouts
         )
         doc.set(trainingPlan).await()
-        val user = UserRepository.getUser()
-        val newUser = user.copy(
-            trainingPlanId = doc.id,
-            role = "organizer"
-        )
-        Firebase.firestore
-            .collection("users")
-            .document(UserRepository.getCurrentUserId()!!)
-            .set(newUser)
-            .await()
-//        workoutsCache.add(workout)
+
         return trainingPlan
     }
 
