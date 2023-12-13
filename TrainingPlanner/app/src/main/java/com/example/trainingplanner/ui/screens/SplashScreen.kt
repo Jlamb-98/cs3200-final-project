@@ -19,13 +19,17 @@ import kotlinx.coroutines.delay
 @Composable
 fun SplashScreen(navHostController: NavHostController) {
     LaunchedEffect(true) {
-        delay(3000)
+//        UserRepository.logout() // TODO: REMOVE; uncomment if you get stuck while the user is logged in
+        delay(1000)
         navHostController.navigate(
             if (UserRepository.getCurrentUserId() == null) {
+                println("Splash Screen to Launch Navigation")
                 Routes.launchNavigation.route
-            } else if (UserRepository.getUser().trainingPlanId.first() == null) {
+            } else if (UserRepository.getUser().trainingPlanId.isEmpty()) {
+                println("Splash Screen to New Plan Screen")
                 Routes.newPlanScreen.route
             } else {
+                println("Splash Screen to App Navigation")
                 Routes.appNavigation.route
             }
         ) {

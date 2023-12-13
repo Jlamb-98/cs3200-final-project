@@ -37,9 +37,10 @@ class SignUpViewModel(application: Application): AndroidViewModel(application) {
         uiState.passwordConfirmationError = false
         uiState.errorMessage = ""
 
-        if (uiState.username.length < 6) {
+        if (uiState.username.length < 3) {
             uiState.usernameError = true
-            uiState.errorMessage = "Username must be at least 6 characters."
+            uiState.errorMessage = "Username must be at least 3 characters."
+            return
         }
 
         if (!uiState.email.contains("@")) {

@@ -2,15 +2,13 @@ package com.example.trainingplanner.ui.repositories
 
 import com.example.trainingplanner.ui.models.Member
 import com.example.trainingplanner.ui.models.TrainingPlan
-import com.example.trainingplanner.ui.models.User
 import com.example.trainingplanner.ui.models.Workout
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.toObject
-import com.google.firebase.firestore.toObjects
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.tasks.await
 import java.time.LocalDate
-import java.time.temporal.ChronoUnit
 
 object TrainingPlanRepository {
     private var trainingPlanCache = TrainingPlan()
@@ -90,6 +88,31 @@ object TrainingPlanRepository {
             it?.date == workout.date
         }
         trainingPlanCache.workouts[oldWorkoutIndex] = workout
+    }
+
+    suspend fun addMember(code: String, userId: String): Boolean {
+        val trainingPlanRef = Firebase.firestore
+            .collection("trainingPlans")
+            .document(code)
+        val document = trainingPlanRef.get().await()
+
+        if (document?.exists() == false) {
+            return false
+        }
+
+        println(document)
+        val newMember = Member(
+            userId = userId,
+            role = "member"
+        )
+        trainingPlanRef.update("members", FieldValue.arrayUnion(newMember)).await()
+        UserRepository.addTrainingPlan(code)
+
+        return true
+    }
+
+    suspend fun checkIfTrainingPlanExists() {
+
     }
 
     private fun generateRandomCode(length: Int): String {
