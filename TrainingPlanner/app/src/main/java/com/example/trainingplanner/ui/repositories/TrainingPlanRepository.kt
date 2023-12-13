@@ -8,8 +8,8 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.tasks.await
 
 object TrainingPlanRepository {
-//    private val workoutsCache = mutableListOf<Workout>()
-//    private var cacheInitialized = false
+    private val trainingPlanCache = TrainingPlan()
+    private var cacheInitialized = false
 
     suspend fun getTrainingPlan(): TrainingPlan? {
         // 'users' collection contains documents for all users, each containing the user's id and their training plan's id
@@ -21,18 +21,6 @@ object TrainingPlanRepository {
             .get()
             .await()
 
-//        if (!cacheInitialized) {
-//            cacheInitialized = true
-//            val snapshot = Firebase.firestore
-//                .collection("workouts")
-//                .whereEqualTo("userId", UserRepository.getCurrentUserId())
-////                .whereArrayContains("members", UserRepository.getCurrentUserId()!!)
-//                .get()
-//                .await()
-//            // this document will contain more than just workouts...
-//            // it has all data about the training plan
-//            workoutsCache.addAll(snapshot.toObjects())
-//        }
         return snapshot.toObject()
     }
 
@@ -46,8 +34,8 @@ object TrainingPlanRepository {
         val doc = Firebase.firestore.collection("trainingPlans").document()
         val code = generateRandomCode(6)    // TODO: could check for repeat code
         val trainingPlan = TrainingPlan(
-            id = doc.id,
-            organizerId = UserRepository.getCurrentUserId(),
+//            id = doc.id,
+//            organizerId = UserRepository.getCurrentUserId(),
             code = code,
             name = name,
             description = description,

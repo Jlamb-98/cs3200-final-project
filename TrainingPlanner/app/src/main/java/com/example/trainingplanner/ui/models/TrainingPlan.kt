@@ -3,16 +3,17 @@ package com.example.trainingplanner.ui.models
 import java.time.LocalDate
 
 data class TrainingPlan(
-    val id: String? = null,
+//    val id: String? = null,
     val code: String? = null,
-    val organizerId: String? = null,
-    val name: String? = null,
-    val description: String? = null,
     val eventName: String? = null,
-    val eventDate: String? = null,
+    val description: String? = null,
     val startDate: String? = null,
-//    val members: List<User?> = mutableListOf(null),   // add this in if members can join multiple plans
-//    val workouts: List<Workout?> = mutableListOf(null),
+    val eventDate: String? = null,
+    val members: List<Member?> = mutableListOf(null),
+    val workouts: List<Workout?> = mutableListOf(null),
+//    val organizer: Member? = null,
+//    val organizerId: String? = null,
+//    val name: String? = null,
 //    val workoutsPerWeek: Int? = null,
 //    val restDaysPerWeek: Int? = null
 )
