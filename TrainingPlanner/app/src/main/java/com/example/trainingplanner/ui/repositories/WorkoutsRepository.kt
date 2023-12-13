@@ -5,6 +5,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.toObjects
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.tasks.await
+import java.time.LocalDate
 
 object WorkoutsRepository {
     private val workoutsCache = mutableListOf<Workout>()
@@ -35,38 +36,33 @@ object WorkoutsRepository {
 //        groupId: String,
         title: String,
         description: String,
-        day: Int,
-        month: Int,
-        year: Int
+        date: LocalDate
     ): Workout {
         val doc = Firebase.firestore.collection("workouts").document()
         val workout = Workout(
-            id = doc.id,
-            userId = UserRepository.getCurrentUserId(),
+//            id = doc.id,
+//            userId = UserRepository.getCurrentUserId(),
 //            groupId = groupId,  //TODO: can I pass this value in or do I need to get it from Firebase??
             title = title,
             description = description,
-            day = day,
-            month = month,
-            year = year,
-            userCompleted = false,
-//            memberCompletion = mutableListOf(false) //TODO: does the number of members matter here??
+            date = date.toString(),
+            membersCompleted = mutableListOf(""),
         )
         doc.set(workout).await()
         workoutsCache.add(workout)
         return workout
     }
 
-    suspend fun updateWorkout(workout: Workout) {
-        Firebase.firestore
-            .collection("workouts")
-            .document(workout.id!!)
-            .set(workout)
-            .await()
-
-        val oldWorkoutIndex = workoutsCache.indexOfFirst {
-            it.id == workout.id
-        }
-        workoutsCache[oldWorkoutIndex] = workout
-    }
+//    suspend fun updateWorkout(workout: Workout) {
+//        Firebase.firestore
+//            .collection("workouts")
+//            .document(workout.id!!)
+//            .set(workout)
+//            .await()
+//
+//        val oldWorkoutIndex = workoutsCache.indexOfFirst {
+//            it.id == workout.id
+//        }
+//        workoutsCache[oldWorkoutIndex] = workout
+//    }
 }

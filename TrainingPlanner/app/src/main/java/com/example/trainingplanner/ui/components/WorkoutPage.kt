@@ -2,20 +2,12 @@ package com.example.trainingplanner.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Button
-import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -28,14 +20,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.example.trainingplanner.ui.models.Workout
 import com.example.trainingplanner.ui.theme.TrainingPlannerTheme
-import java.time.LocalDate
 
 @Composable
 public fun WorkoutPage(
     workout: Workout,
+    username: String,
     offsetX: Float = 0f,
     toggle: () -> Unit = {},
     onEditPressed: () -> Unit = {}
@@ -53,21 +44,21 @@ public fun WorkoutPage(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(text = workout.getDate(), fontWeight = FontWeight.Bold)
+            Text(text = workout.date!!, fontWeight = FontWeight.Bold)
 
-            if (!workout.created!!) {
+            if (workout.title == null) {
                 Button(onClick = { /*TODO edit workout screen*/ }) {
                     Text("Create workout")
                 }
             } else {
                 Text(
-                    text = workout.title ?: "No title",
+                    text = workout.title,
                     fontWeight = FontWeight.Bold,
                     style = MaterialTheme.typography.headlineMedium,
                 )
                 Text(text = workout.description ?: "No description")
                 Button(onClick = toggle) {
-                    if (!workout.userCompleted!!) {
+                    if (!workout.membersCompleted.contains(username)) {
                         Text(text = "Mark as Complete")
                     } else {
                         Text(text = "Undo Completion")
@@ -89,12 +80,10 @@ fun CreatedWorkoutPagePreview() {
         WorkoutPage(workout = Workout(
             title = "4 mile run",
             description = "go on a 4 mile run",
-            day = 1,
-            month = 2,
-            year = 2023,
-            userCompleted = false,
-            created = true
-        ))
+            date = "2000-01-02",
+            membersCompleted = mutableListOf("BillyRuns", "HarryFastCheeks"),
+        ),
+            username = "Fred123")
     }
 }
 

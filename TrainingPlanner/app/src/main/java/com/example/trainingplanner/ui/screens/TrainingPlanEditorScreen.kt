@@ -51,23 +51,18 @@ fun TrainingPlanEditorScreen(navHostController: NavHostController) {
                     .padding(16.dp)
             ) {
                 Text(text = state.heading, style = MaterialTheme.typography.headlineSmall)
+
                 FormField(
-                    value = state.name,
-                    onValueChange = { state.name = it },
-                    placeholder = { Text("Name") },
-                    error = state.nameError
+                    value = state.eventName,
+                    onValueChange = { state.eventName = it },
+                    placeholder = { Text("Event Name") },
+                    error = state.eventNameError
                 )
                 FormField(
                     value = state.description,
                     onValueChange = { state.description = it },
                     placeholder = { Text("Description") },
                     error = state.descriptionError
-                )
-                FormField(
-                    value = state.eventName,
-                    onValueChange = { state.eventName = it },
-                    placeholder = { Text("Event Name") },
-                    error = state.eventNameError
                 )
                 FormField(
                     value = state.startDate,

@@ -41,7 +41,6 @@ fun DashboardScreen(navHostController: NavHostController) {
 
     LaunchedEffect(true) {
         viewModel.getTrainingPlan()
-        viewModel.getWorkouts()
     }
     LaunchedEffect(state.translation.value >= state.OFFSET || state.translation.value <= -state.OFFSET) {
         viewModel.updateCurrentWorkout()
@@ -85,28 +84,31 @@ fun DashboardScreen(navHostController: NavHostController) {
                 }
         ) {
             Box() {
-                if (state.selectedDate > LocalDate.parse(state.trainingPlan.startDate)) {
-                    WorkoutPage(
-                        workout = state.workoutTuple[0],
-                        offsetX = state.translation.value-state.OFFSET
-                    )
-                }
-//                    if (state.selectedDate > 0) {
-                WorkoutPage(
-                    workout = state.workoutTuple[1],
-                    offsetX = state.translation.value,
-                    toggle = {
-                        scope.launch {
-                            viewModel.toggleCompletion(state.workouts[state.currentWorkout])
-                        }
+                if (state.workoutsReady) {
+                    if (state.selectedDate > LocalDate.parse(state.trainingPlan.startDate)) {
+                        WorkoutPage(
+                            workout = state.workouts[state.currentWorkout-1]!!,
+                            username = state.username,
+                            offsetX = state.translation.value-state.OFFSET
+                        )
                     }
-                )
-//                    }
-                if (state.selectedDate < LocalDate.parse(state.trainingPlan.eventDate)) {
                     WorkoutPage(
-                        workout = state.workoutTuple[2],
-                        offsetX = state.translation.value+state.OFFSET
+                        workout = state.workouts[state.currentWorkout]!!,
+                        username = state.username,
+                        offsetX = state.translation.value,
+                        toggle = {
+                            scope.launch {
+                                viewModel.toggleCompletion(state.workouts[state.currentWorkout]!!)
+                            }
+                        }
                     )
+                    if (state.selectedDate < LocalDate.parse(state.trainingPlan.eventDate)) {
+                        WorkoutPage(
+                            workout = state.workouts[state.currentWorkout+1]!!,
+                            username = state.username,
+                            offsetX = state.translation.value+state.OFFSET
+                        )
+                    }
                 }
             }
         }

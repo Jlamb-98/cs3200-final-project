@@ -3,6 +3,7 @@ import com.example.trainingplanner.ui.models.User
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.toObject
 import com.google.firebase.ktx.Firebase
@@ -57,23 +58,30 @@ object UserRepository {
         return Firebase.auth.currentUser?.uid
     }
 
-    suspend fun getUsername(): String? {
-        val snapshot = Firebase.firestore
-            .collection("users")
-            .document(getCurrentUserId()!!)
-            .get()
-            .await()
-        return snapshot.toObject()
-    }
-
-//    suspend fun getUser(): User {
+//    suspend fun getUsername(): String? {
 //        val snapshot = Firebase.firestore
 //            .collection("users")
 //            .document(getCurrentUserId()!!)
 //            .get()
 //            .await()
-//        return snapshot.toObject()!!
+//        return snapshot.toObject()
 //    }
+
+    suspend fun getUser(): User {
+        val snapshot = Firebase.firestore
+            .collection("users")
+            .document(getCurrentUserId()!!)
+            .get()
+            .await()
+        return snapshot.toObject()!!
+    }
+
+    suspend fun addTrainingPlan(code: String) {
+        val snapshot = Firebase.firestore
+            .collection("users")
+            .document(getCurrentUserId()!!)
+            .update("trainingPlanId", FieldValue.arrayUnion(code))
+    }
 
 //    suspend fun getUserTrainingPlan(): String {
 //        val snapshot = Firebase.firestore // TODO: could create cache and get value from it

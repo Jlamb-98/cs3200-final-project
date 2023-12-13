@@ -23,7 +23,7 @@ fun SplashScreen(navHostController: NavHostController) {
         navHostController.navigate(
             if (UserRepository.getCurrentUserId() == null) {
                 Routes.launchNavigation.route
-            } else if (UserRepository.getUser().trainingPlanId == null) {
+            } else if (UserRepository.getUser().trainingPlanId.first() == null) {
                 Routes.newPlanScreen.route
             } else {
                 Routes.appNavigation.route

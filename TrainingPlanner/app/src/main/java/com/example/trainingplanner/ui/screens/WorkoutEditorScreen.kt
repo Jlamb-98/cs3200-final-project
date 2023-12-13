@@ -34,7 +34,7 @@ fun WorkoutEditorScreen(navHostController: NavHostController, id: String?) {
     val state = viewModel.uiState
     
     LaunchedEffect(true) {
-        viewModel.setupInitialState(id)
+//        viewModel.setupInitialState(id)
     }
     
     Column(

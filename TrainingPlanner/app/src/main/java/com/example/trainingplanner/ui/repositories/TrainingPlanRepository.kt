@@ -13,18 +13,20 @@ import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 
 object TrainingPlanRepository {
-    private val trainingPlanCache = TrainingPlan()
+    private var trainingPlanCache = TrainingPlan()
     private var cacheInitialized = false
 
-    suspend fun getTrainingPlan(id: String): TrainingPlan? {
-        // 'users' collection contains documents for all users, each containing the user's id and their training plan's id
-        val snapshot = Firebase.firestore
-            .collection("trainingPlans")
-            .document(id)
-            .get()
-            .await()
+    suspend fun getTrainingPlan(code: String): TrainingPlan {
+        if (!cacheInitialized || code != trainingPlanCache.code) {
+            val snapshot = Firebase.firestore
+                .collection("trainingPlans")
+                .document(code)
+                .get()
+                .await()
+            trainingPlanCache = snapshot.toObject()!!
+        }
 
-        return snapshot.toObject()
+        return trainingPlanCache
     }
 
     suspend fun createTrainingPlan(
@@ -34,7 +36,7 @@ object TrainingPlanRepository {
         eventDate: LocalDate,
     ): TrainingPlan {
         // create empty workout list for time period
-        val workouts = mutableListOf<Workout>()
+        val workouts = mutableListOf<Workout?>()
         var currentDate = startDate
         while (currentDate.isBefore(eventDate) || currentDate.isEqual(eventDate)) {
             workouts.add(Workout(date = currentDate.toString()))
@@ -49,7 +51,7 @@ object TrainingPlanRepository {
             description = description,
             startDate = startDate.toString(),
             eventDate = eventDate.toString(),
-            members = listOf(
+            members = mutableListOf(
                 Member(
                     userId = UserRepository.getCurrentUserId(),
                     role = "organizer"
@@ -59,7 +61,35 @@ object TrainingPlanRepository {
         )
         doc.set(trainingPlan).await()
 
+        UserRepository.addTrainingPlan(code)
+
         return trainingPlan
+    }
+
+    suspend fun updateWorkout(workout: Workout) {
+        val workoutsCollectionRef = Firebase.firestore
+            .collection("trainingPlans")
+            .document(trainingPlanCache.code!!)
+            .collection("workouts")
+
+        val document = workoutsCollectionRef
+            .whereEqualTo("date", workout.date)
+            .get()
+            .await()
+            .documents
+            .firstOrNull()
+
+        if (document != null) {
+            val workoutId = document.id
+            val workoutDocumentRef = workoutsCollectionRef.document(workoutId)
+            workoutDocumentRef.set(workout)
+        } else {
+            println("No workout found for ${workout.date}")
+        }
+        val oldWorkoutIndex = trainingPlanCache.workouts.indexOfFirst {
+            it?.date == workout.date
+        }
+        trainingPlanCache.workouts[oldWorkoutIndex] = workout
     }
 
     private fun generateRandomCode(length: Int): String {
@@ -68,18 +98,5 @@ object TrainingPlanRepository {
             .map { allowedChars.random() }
             .joinToString("")
     }
-
-//    suspend fun updateWorkout(workout: Workout) {
-//        Firebase.firestore
-//            .collection("workouts")
-//            .document(workout.id!!)
-//            .set(workout)
-//            .await()
-//
-//        val oldWorkoutIndex = workoutsCache.indexOfFirst {
-//            it.id == workout.id
-//        }
-//        workoutsCache[oldWorkoutIndex] = workout
-//    }
 
 }

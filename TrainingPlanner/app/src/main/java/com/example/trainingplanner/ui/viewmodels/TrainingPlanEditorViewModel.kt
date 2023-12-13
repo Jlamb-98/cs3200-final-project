@@ -6,17 +6,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.AndroidViewModel
 import com.example.trainingplanner.ui.repositories.TrainingPlanRepository
-import com.example.trainingplanner.ui.repositories.UserRepository
-import com.example.trainingplanner.ui.repositories.WorkoutsRepository
+import java.time.LocalDate
 
 class TrainingPlanEditorScreenState {
-    var name by mutableStateOf("")
-    var description by mutableStateOf("")
     var eventName by mutableStateOf("")
-    var eventDate by mutableStateOf("")
+    var description by mutableStateOf("")
     var startDate by mutableStateOf("")
+    var eventDate by mutableStateOf("")
 
-    var nameError by mutableStateOf(false)
     var descriptionError by mutableStateOf(false)
     var eventNameError by mutableStateOf(false)
     var eventDateError by mutableStateOf(false)
@@ -31,16 +28,15 @@ class TrainingPlanEditorViewModel(application: Application): AndroidViewModel(ap
     val uiState = TrainingPlanEditorScreenState()
     var id: String? = null
 
-    suspend fun setupInitialState(id: String?) {
-        if (id == null || id == "new") {
+    suspend fun setupInitialState(code: String?) {
+        if (code == null || code == "new") {
             uiState.heading = "Create Training Plan"
             return
         }
 
         uiState.heading = "Edit Training Plan"
-        this.id = id
-        val trainingPlan = TrainingPlanRepository.getTrainingPlan() ?: return
-        uiState.name = trainingPlan.name ?: ""
+        this.id = code
+        val trainingPlan = TrainingPlanRepository.getTrainingPlan(code)
         uiState.description = trainingPlan.description ?: ""
         uiState.eventName = trainingPlan.eventName ?: ""
         uiState.eventDate = trainingPlan.eventDate ?: ""
@@ -51,27 +47,20 @@ class TrainingPlanEditorViewModel(application: Application): AndroidViewModel(ap
 //        if (uiState.dayError || uiState.monthError || uiState.yearError) return
 
         uiState.errorMessage = ""
-        uiState.nameError = false
         uiState.descriptionError = false
 
-        if (uiState.name.isEmpty()) {
-            uiState.nameError = true
-            uiState.errorMessage = "Title cannot be blank"
-            return
-        }
-        if (uiState.description.isEmpty()) {
-            uiState.descriptionError = true
-            uiState.errorMessage = "Description cannot be blank"
+        if (uiState.eventName.isEmpty()) {
+            uiState.eventNameError = true
+            uiState.errorMessage = "Event name cannot be blank"
             return
         }
 
         if (id == null || id == "new") {    // create new training plan
             TrainingPlanRepository.createTrainingPlan(
-                uiState.name,
-                uiState.description,
                 uiState.eventName,
-                uiState.eventDate,
-                uiState.startDate
+                uiState.description,
+                LocalDate.parse(uiState.startDate),   // TODO: read these as LocalDates from input
+                LocalDate.parse(uiState.eventDate),
             )
         }
 //        else {    // update existing workout
