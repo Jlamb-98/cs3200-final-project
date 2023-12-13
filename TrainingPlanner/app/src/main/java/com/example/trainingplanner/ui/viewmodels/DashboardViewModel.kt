@@ -21,6 +21,7 @@ class DashboardScreenState {
     var workoutsReady = false
 
     var username = ""
+    var userIsOrganizer = false
     var trainingPlan = TrainingPlan(eventDate = LocalDate.now().toString(), startDate = LocalDate.now().toString())
     var selectedDate: LocalDate = LocalDate.now()
 
@@ -43,12 +44,17 @@ class DashboardViewModel(application: Application): AndroidViewModel(application
         }
         println("Selected Date: ${uiState.selectedDate}")
 
+        // determine if user is Organizer
+        val member = uiState.trainingPlan.members.find { it!!.userId == user.id }
+        if (member!!.role == "organizer") {
+            uiState.userIsOrganizer = true
+        }
+        println(member)
+
+        // get workouts
         val workouts = uiState.trainingPlan.workouts
         println("getting workouts")
         uiState.workouts = workouts
-
-        println("Workouts: ${uiState.workouts}")
-        println("getting current workout")
         val date = uiState.selectedDate
         uiState.currentWorkout = uiState.workouts.indexOfFirst { LocalDate.parse(it?.date) == date }
         uiState.workoutsReady = true
@@ -67,10 +73,10 @@ class DashboardViewModel(application: Application): AndroidViewModel(application
 //    }
 
     suspend fun toggleCompletion(workout: Workout) {
-//        val workoutCopy = workout.copy()
-//        workoutCopy.membersCompleted.add(UserRepository.getUser().username)
-//        uiState._workouts[uiState._workouts.indexOf(workout)] = workoutCopy
-//        WorkoutsRepository.updateWorkout(workoutCopy)
+        val workoutCopy = workout.copy()
+        workoutCopy.membersCompleted.add(UserRepository.getUser().username)
+        uiState._workouts[uiState._workouts.indexOf(workout)] = workoutCopy
+        TrainingPlanRepository.updateWorkout(workoutCopy)
     }
 
     suspend fun dragPage(change: Float) {

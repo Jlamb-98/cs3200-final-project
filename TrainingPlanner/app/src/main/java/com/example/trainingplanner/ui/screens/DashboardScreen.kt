@@ -89,12 +89,14 @@ fun DashboardScreen(navHostController: NavHostController) {
                         WorkoutPage(
                             workout = state.workouts[state.currentWorkout-1]!!,
                             username = state.username,
+                            userIsOrganizer = state.userIsOrganizer,
                             offsetX = state.translation.value-state.OFFSET
                         )
                     }
                     WorkoutPage(
                         workout = state.workouts[state.currentWorkout]!!,
                         username = state.username,
+                        userIsOrganizer = state.userIsOrganizer,
                         offsetX = state.translation.value,
                         toggle = {
                             scope.launch {
@@ -106,6 +108,7 @@ fun DashboardScreen(navHostController: NavHostController) {
                         WorkoutPage(
                             workout = state.workouts[state.currentWorkout+1]!!,
                             username = state.username,
+                            userIsOrganizer = state.userIsOrganizer,
                             offsetX = state.translation.value+state.OFFSET
                         )
                     }
