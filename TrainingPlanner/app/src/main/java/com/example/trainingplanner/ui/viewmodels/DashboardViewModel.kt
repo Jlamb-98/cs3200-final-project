@@ -21,6 +21,7 @@ class DashboardScreenState {
     var workoutsReady = false
 
     var username = ""
+    var code = ""
     var userIsOrganizer = false
     var trainingPlan = TrainingPlan(eventDate = LocalDate.now().toString(), startDate = LocalDate.now().toString())
     var selectedDate: LocalDate = LocalDate.now()
@@ -35,21 +36,19 @@ class DashboardViewModel(application: Application): AndroidViewModel(application
         uiState.workoutsReady = false
         println("getting training plan")
         val user = UserRepository.getUser()
-        val code = user.trainingPlanId.first()
+        uiState.code = user.trainingPlanId.first()!!
         uiState.username = user.username!!
-        uiState.trainingPlan = TrainingPlanRepository.getTrainingPlan(code!!)
+        uiState.trainingPlan = TrainingPlanRepository.getTrainingPlan(uiState.code)
         val startDate = LocalDate.parse(uiState.trainingPlan.startDate)
         if (uiState.selectedDate < startDate) {
             uiState.selectedDate = startDate
         }
-        println("Selected Date: ${uiState.selectedDate}")
 
         // determine if user is Organizer
         val member = uiState.trainingPlan.members.find { it!!.userId == user.id }
         if (member!!.role == "organizer") {
             uiState.userIsOrganizer = true
         }
-        println(member)
 
         // get workouts
         val workouts = uiState.trainingPlan.workouts
@@ -59,18 +58,6 @@ class DashboardViewModel(application: Application): AndroidViewModel(application
         uiState.currentWorkout = uiState.workouts.indexOfFirst { LocalDate.parse(it?.date) == date }
         uiState.workoutsReady = true
     }
-
-//    fun getCurrentWorkout(offset: Long): Workout {
-//        println("getting current workout")
-//        val date = uiState.selectedDate.plusDays(offset)
-//        return uiState.workouts.find {
-//            LocalDate.of(it.year!!, it.month!!, it.day!!) == date
-//        } ?: Workout(
-//            day = uiState.selectedDate.dayOfMonth,
-//            month = uiState.selectedDate.monthValue,
-//            year = uiState.selectedDate.year
-//        )
-//    }
 
     suspend fun toggleCompletion(workout: Workout) {
         val workoutCopy = workout.copy()

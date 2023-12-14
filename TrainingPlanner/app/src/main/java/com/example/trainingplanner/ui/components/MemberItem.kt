@@ -33,7 +33,7 @@ fun MemberItem(
         modifier = Modifier
 //            .fillMaxWidth()
             .clickable { /*TODO*/ }
-            .padding(16.dp)
+            .padding(8.dp)
 //            .background(MaterialTheme.colorScheme.secondary)
     ) {
         Row(

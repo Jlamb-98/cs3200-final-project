@@ -31,6 +31,8 @@ import com.example.trainingplanner.ui.navigation.Routes
 import com.example.trainingplanner.ui.viewmodels.DashboardViewModel
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 import java.time.LocalDate
 
 @Composable
@@ -43,6 +45,7 @@ fun DashboardScreen(navHostController: NavHostController) {
         viewModel.getTrainingPlan()
     }
     LaunchedEffect(state.translation.value >= state.OFFSET || state.translation.value <= -state.OFFSET) {
+        println(state.translation.value)
         viewModel.updateCurrentWorkout()
     }
 
@@ -102,6 +105,9 @@ fun DashboardScreen(navHostController: NavHostController) {
                             scope.launch {
                                 viewModel.toggleCompletion(state.workouts[state.currentWorkout]!!)
                             }
+                        },
+                        onEditPressed = {
+                            navHostController.navigate("${Routes.workoutEditor.route}?date=${state.selectedDate}&code=${state.code}")
                         }
                     )
                     if (state.selectedDate < LocalDate.parse(state.trainingPlan.eventDate)) {

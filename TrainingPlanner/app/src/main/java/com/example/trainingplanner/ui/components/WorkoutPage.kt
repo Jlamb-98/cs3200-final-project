@@ -37,7 +37,6 @@ fun WorkoutPage(
 ) {
     // TODO: Make this look nicer
     Surface(
-        color = Color.LightGray,
         modifier = Modifier
             .fillMaxWidth()
             .fillMaxHeight()

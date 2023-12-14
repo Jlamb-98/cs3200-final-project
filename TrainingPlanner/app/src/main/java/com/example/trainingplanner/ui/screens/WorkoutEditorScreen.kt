@@ -28,13 +28,13 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun WorkoutEditorScreen(navHostController: NavHostController, id: String?) {
+fun WorkoutEditorScreen(navHostController: NavHostController, date: String?, code: String?) {
     val viewModel: WorkoutEditorViewModel = viewModel()
     val scope = rememberCoroutineScope()
     val state = viewModel.uiState
     
     LaunchedEffect(true) {
-//        viewModel.setupInitialState(id)
+        viewModel.setupInitialState(date, code)
     }
     
     Column(
@@ -74,6 +74,7 @@ fun WorkoutEditorScreen(navHostController: NavHostController, id: String?) {
                         onValueChange = { viewModel.updateDay(it) },
                         placeholder = { Text("") },
                         label = { Text("Day") },
+                        readOnly = true,
                         isError = state.dayError
                     )
                     OutlinedTextField(
@@ -84,6 +85,7 @@ fun WorkoutEditorScreen(navHostController: NavHostController, id: String?) {
                         onValueChange = { viewModel.updateMonth(it) },
                         placeholder = { Text("") },
                         label = { Text("Month") },
+                        readOnly = true,
                         isError = state.monthError
                     )
                     OutlinedTextField(
@@ -94,6 +96,7 @@ fun WorkoutEditorScreen(navHostController: NavHostController, id: String?) {
                         onValueChange = { viewModel.updateYear(it) },
                         placeholder = { Text("") },
                         label = { Text("Year") },
+                        readOnly = true,
                         isError = state.yearError
                     )
                 }

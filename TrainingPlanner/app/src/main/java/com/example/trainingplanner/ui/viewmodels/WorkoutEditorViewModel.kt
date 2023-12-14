@@ -18,6 +18,7 @@ class WorkoutEditorScreenState {
     var day by mutableStateOf("")
     var month by mutableStateOf("")
     var year by mutableStateOf("")
+    var restDay by mutableStateOf(false)
 
     var titleError by mutableStateOf(false)
     var descriptionError by mutableStateOf(false)
@@ -36,22 +37,25 @@ class WorkoutEditorScreenState {
 
 class WorkoutEditorViewModel(application: Application): AndroidViewModel(application) {
     val uiState = WorkoutEditorScreenState()
-    var id: String? = null
+    private var date: String? = null
+    private var code: String? = null
 
-    suspend fun setupInitialState(id: String?) {
-//        if (id == null || id == "new") {
-//            uiState.heading = "Create Workout"
-//            return
-//        }
-//
-//        uiState.heading = "Edit Workout"
-//        this.id = id
-//        val workout = WorkoutsRepository.getWorkouts().find { it.id == id } ?: return
-//        uiState.title = workout.title ?: ""
-//        uiState.description = workout.description ?: ""
-//        uiState.day = "${LocalDate.parse(workout.date).dayOfMonth}" // TODO: fix these dumb conversions
-//        uiState.month = "${LocalDate.parse(workout.date).monthValue}"
-//        uiState.year = "${LocalDate.parse(workout.date).year}"
+    suspend fun setupInitialState(date: String?, code: String?) {
+        if (date == null || date == "new" || code == null) {
+            uiState.heading = "Create Workout"
+            return
+        }
+
+        uiState.heading = "Edit Workout"
+        this.date = date
+        this.code = code
+        val workout = TrainingPlanRepository.getTrainingPlan(code).workouts.find { it!!.date == date } ?: return
+        uiState.title = workout.title ?: ""
+        uiState.description = workout.description ?: ""
+        uiState.day = "${LocalDate.parse(workout.date).dayOfMonth}" // TODO: fix these dumb conversions
+        uiState.month = "${LocalDate.parse(workout.date).monthValue}"
+        uiState.year = "${LocalDate.parse(workout.date).year}"
+        uiState.restDay = workout.restDay ?: false
     }
 
     fun updateDay(input: String) {
@@ -74,7 +78,7 @@ class WorkoutEditorViewModel(application: Application): AndroidViewModel(applica
             input.filter { !it.isWhitespace() }.toInt()
         } catch (e: Exception) {
             uiState.monthError = true
-            uiState.errorMessage = "Day must be a number"
+            uiState.errorMessage = "Month must be a number"
         } finally {
             uiState.month = input.filter { !it.isWhitespace() }
         }
@@ -87,7 +91,7 @@ class WorkoutEditorViewModel(application: Application): AndroidViewModel(applica
             input.filter { !it.isWhitespace() }.toInt()
         } catch (e: Exception) {
             uiState.yearError = true
-            uiState.errorMessage = "Day must be a number"
+            uiState.errorMessage = "Year must be a number"
         } finally {
             uiState.year = input.filter { !it.isWhitespace() }
         }
@@ -111,22 +115,15 @@ class WorkoutEditorViewModel(application: Application): AndroidViewModel(applica
             return
         }
 
-        if (id == null || id == "new") {    // create new workout
-//            TrainingPlanRepository.createWorkout(
-//                uiState.title,
-//                uiState.description,
-//                LocalDate.of(uiState.year.toInt(), uiState.month.toInt(), uiState.day.toInt())
-//            )
-        } else {    // update existing workout
-//            val workout = WorkoutsRepository.getWorkouts().find { it.date == date } ?: return
-//            TrainingPlanRepository.updateWorkout(
-//                workout.copy(
-//                    title = uiState.title,
-//                    description = uiState.description,
-//                    date = "${uiState.year}-${uiState.month}-${uiState.day}"
-//                )
-//            )
-        }
+        val workout = TrainingPlanRepository.getTrainingPlan(code!!).workouts.find { it!!.date == date } ?: return
+        TrainingPlanRepository.updateWorkout(
+            workout.copy(
+                title = uiState.title,
+                description = uiState.description,
+                date = "${uiState.year}-${uiState.month}-${uiState.day}",
+                restDay = uiState.restDay
+            )
+        )
 
         uiState.saveSuccess = true
     }

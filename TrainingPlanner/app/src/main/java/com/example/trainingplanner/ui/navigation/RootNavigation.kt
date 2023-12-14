@@ -123,10 +123,14 @@ fun RootNavigation() {
                     composable(route = Routes.dashboard.route) { DashboardScreen(navController) }
 //                    composable(route = Routes.invite.route) { InviteScreen(navController) }
                     composable(route = Routes.trainingPlanEditor.route) { TrainingPlanEditorScreen(navController) }
-                    composable(route = Routes.workoutEditor.route,
-                        arguments = listOf(navArgument("id") { defaultValue = "new" })
+                    composable(
+                        route = "${Routes.workoutEditor.route}?date={date}&code={code}",
+                        arguments = listOf(
+                            navArgument("date") { defaultValue = "new" },
+                            navArgument("code") { defaultValue = "new" }
+                        )
                     ) { navBackStackEntry ->
-                        WorkoutEditorScreen(navController, navBackStackEntry.arguments?.getString("id"))
+                        WorkoutEditorScreen(navController, navBackStackEntry.arguments?.getString("date"), navBackStackEntry.arguments?.getString("code"))
                     }
 //                    composable(route = Routes.payment.route) { PaymentScreen(navController) }
                 }

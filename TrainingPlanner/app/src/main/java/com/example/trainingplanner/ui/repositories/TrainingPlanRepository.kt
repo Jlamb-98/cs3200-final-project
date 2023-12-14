@@ -65,22 +65,23 @@ object TrainingPlanRepository {
     }
 
     suspend fun updateWorkout(workout: Workout) {
-        val workoutsCollectionRef = Firebase.firestore
+        val trainingPlanRef = Firebase.firestore
             .collection("trainingPlans")
             .document(trainingPlanCache.code!!)
-            .collection("workouts")
 
         val document = workoutsCollectionRef
             .whereEqualTo("date", workout.date)
             .get()
             .await()
             .documents
-            .firstOrNull()
 
-        if (document != null) {
-            val workoutId = document.id
-            val workoutDocumentRef = workoutsCollectionRef.document(workoutId)
-            workoutDocumentRef.set(workout)
+        println(workoutsCollectionRef)
+        println(document)
+
+        if (document.firstOrNull() != null) {
+//            val workoutId = document.id
+//            val workoutDocumentRef = workoutsCollectionRef.document(workoutId)
+//            workoutDocumentRef.set(workout)
         } else {
             println("No workout found for ${workout.date}")
         }
@@ -109,10 +110,6 @@ object TrainingPlanRepository {
         UserRepository.addTrainingPlan(code)
 
         return true
-    }
-
-    suspend fun checkIfTrainingPlanExists() {
-
     }
 
     private fun generateRandomCode(length: Int): String {
