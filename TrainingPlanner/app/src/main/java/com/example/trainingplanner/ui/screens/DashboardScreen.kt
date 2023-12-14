@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -52,8 +53,11 @@ fun DashboardScreen(navHostController: NavHostController) {
         modifier = Modifier
             .fillMaxWidth()
             .fillMaxHeight(),
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        Text(text = "Group code: ${state.code}", style = MaterialTheme.typography.headlineSmall)
+        Text(text = "${state.daysUntilEvent} days left!", style = MaterialTheme.typography.headlineSmall)
         Row(
             horizontalArrangement = Arrangement.Center,
             modifier = Modifier

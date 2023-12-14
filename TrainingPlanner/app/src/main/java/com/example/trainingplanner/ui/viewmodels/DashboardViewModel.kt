@@ -11,6 +11,7 @@ import com.example.trainingplanner.ui.repositories.TrainingPlanRepository
 import com.example.trainingplanner.ui.repositories.UserRepository
 import com.example.trainingplanner.ui.repositories.WorkoutsRepository
 import java.time.LocalDate
+import java.time.temporal.ChronoUnit
 
 class DashboardScreenState {
     val OFFSET = 1000f   // TODO: does my offset adjust based on screen size??
@@ -24,6 +25,7 @@ class DashboardScreenState {
     var userIsOrganizer = false
     var trainingPlan = TrainingPlan(eventDate = LocalDate.now().toString(), startDate = LocalDate.now().toString())
     var selectedDate: LocalDate = LocalDate.now()
+    var daysUntilEvent: Long = 0
 
     val translation = Animatable(0f)
 }
@@ -39,9 +41,11 @@ class DashboardViewModel(application: Application): AndroidViewModel(application
         uiState.username = user.username!!
         uiState.trainingPlan = TrainingPlanRepository.getTrainingPlan(uiState.code)
         val startDate = LocalDate.parse(uiState.trainingPlan.startDate)
+        val eventDate = LocalDate.parse(uiState.trainingPlan.eventDate)
         if (uiState.selectedDate < startDate) {
             uiState.selectedDate = startDate
         }
+        uiState.daysUntilEvent = ChronoUnit.DAYS.between(LocalDate.now(), eventDate)
 
         // determine if user is Organizer
         val member = uiState.trainingPlan.members.find { it!!.userId == user.id }
