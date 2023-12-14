@@ -37,6 +37,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.example.trainingplanner.ui.repositories.UserRepository
 import com.example.trainingplanner.ui.screens.DashboardScreen
 import com.example.trainingplanner.ui.screens.LaunchScreen
@@ -45,6 +46,7 @@ import com.example.trainingplanner.ui.screens.SignInScreen
 import com.example.trainingplanner.ui.screens.SignUpScreen
 import com.example.trainingplanner.ui.screens.SplashScreen
 import com.example.trainingplanner.ui.screens.TrainingPlanEditorScreen
+import com.example.trainingplanner.ui.screens.WorkoutEditorScreen
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -122,15 +124,15 @@ fun RootNavigation() {
                     composable(route = Routes.dashboard.route) { DashboardScreen(navController) }
                     composable(route = Routes.trainingPlanEditor.route) { TrainingPlanEditorScreen(navController) }
 //                    composable(route = Routes.payment.route) { PaymentScreen(navController) }
-//                    composable(
-//                        route = "${Routes.workoutEditor.route}?date={date}&code={code}",
-//                        arguments = listOf(
-//                            navArgument("date") { defaultValue = "new" },
-//                            navArgument("code") { defaultValue = "new" }
-//                        )
-//                    ) { navBackStackEntry ->
-//                        WorkoutEditorScreen(navController, navBackStackEntry.arguments?.getString("date"), navBackStackEntry.arguments?.getString("code"))
-//                    }
+                    composable(
+                        route = "${Routes.workoutEditor.route}?date={date}&code={code}",
+                        arguments = listOf(
+                            navArgument("date") { defaultValue = "new" },
+                            navArgument("code") { defaultValue = "new" }
+                        )
+                    ) { navBackStackEntry ->
+                        WorkoutEditorScreen(navController, navBackStackEntry.arguments?.getString("date"), navBackStackEntry.arguments?.getString("code"))
+                    }
                 }
                 composable(route = Routes.splashScreen.route) { SplashScreen(navController) }
             }

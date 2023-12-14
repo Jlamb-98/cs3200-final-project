@@ -91,23 +91,27 @@ fun DashboardScreen(navHostController: NavHostController) {
                         WorkoutPage(
                             workout = state.workouts[state.currentWorkout-1]!!,
                             username = state.username,
+                            userIsOrganizer = state.userIsOrganizer,
                             offsetX = state.translation.value-state.OFFSET
                         )
                     }
                     WorkoutPage(
                         workout = state.workouts[state.currentWorkout]!!,
                         username = state.username,
+                        userIsOrganizer = state.userIsOrganizer,
                         offsetX = state.translation.value,
                         toggle = {
                             scope.launch {
                                 viewModel.toggleCompletion(state.workouts[state.currentWorkout]!!)
                             }
-                        }
+                        },
+                        onEditPressed = { navHostController.navigate("${Routes.workoutEditor.route}?date=${state.selectedDate}&code=${state.code}") }
                     )
                     if (state.selectedDate < LocalDate.parse(state.trainingPlan.eventDate)) {
                         WorkoutPage(
                             workout = state.workouts[state.currentWorkout+1]!!,
                             username = state.username,
+                            userIsOrganizer = state.userIsOrganizer,
                             offsetX = state.translation.value+state.OFFSET
                         )
                     }

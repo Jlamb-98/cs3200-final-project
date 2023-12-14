@@ -2,6 +2,7 @@ package com.example.trainingplanner.ui.viewmodels
 
 import android.app.Application
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.AndroidViewModel
@@ -13,18 +14,21 @@ import java.time.LocalDate
 import java.time.ZoneId
 
 class WorkoutEditorScreenState {
-    var title by mutableStateOf("")
-    var description by mutableStateOf("")
     var day by mutableStateOf("")
     var month by mutableStateOf("")
     var year by mutableStateOf("")
+    var amount by mutableStateOf("")
+    var unit by mutableStateOf("")
+    var type by mutableStateOf("")
+    var description by mutableStateOf("")
     var restDay by mutableStateOf(false)
 
-    var titleError by mutableStateOf(false)
-    var descriptionError by mutableStateOf(false)
     var dayError by mutableStateOf(false)
     var monthError by mutableStateOf(false)
     var yearError by mutableStateOf(false)
+    var amountError by mutableStateOf(false)
+    var unitError by mutableStateOf(false)
+    var typeError by mutableStateOf(false)
     var errorMessage by mutableStateOf("")
     var saveSuccess by mutableStateOf(false)
 
@@ -46,16 +50,18 @@ class WorkoutEditorViewModel(application: Application): AndroidViewModel(applica
             return
         }
 
-//        uiState.heading = "Edit Workout"
-//        this.date = date
-//        this.code = code
-//        val workout = TrainingPlanRepository.getTrainingPlan(code).workouts.find { it!!.date == date } ?: return
-//        uiState.title = workout.title ?: ""
-//        uiState.description = workout.description ?: ""
-//        uiState.day = "${LocalDate.parse(workout.date).dayOfMonth}" // TODO: fix these dumb conversions
-//        uiState.month = "${LocalDate.parse(workout.date).monthValue}"
-//        uiState.year = "${LocalDate.parse(workout.date).year}"
-//        uiState.restDay = workout.restDay ?: false
+        uiState.heading = "Edit Workout"
+        this.date = date
+        this.code = code
+        val workout = WorkoutsRepository.getWorkouts(code).find { it.date == date } ?: return
+        uiState.description = workout.description ?: ""
+        uiState.day = "${LocalDate.parse(workout.date).dayOfMonth}" // TODO: fix these dumb conversions
+        uiState.month = "${LocalDate.parse(workout.date).monthValue}"
+        uiState.year = "${LocalDate.parse(workout.date).year}"
+        uiState.restDay = workout.restDay ?: false
+        uiState.amount = "${workout.amount ?: 0}"
+        uiState.unit = workout.unit ?: ""
+        uiState.type = workout.type ?: ""
     }
 
     fun updateDay(input: String) {
@@ -97,33 +103,48 @@ class WorkoutEditorViewModel(application: Application): AndroidViewModel(applica
         }
     }
 
+    fun updateAmount(input: String) {
+        uiState.amountError = false
+        uiState.errorMessage = ""
+        try {
+            input.filter { !it.isWhitespace() }.toInt()
+        } catch (e: Exception) {
+            uiState.amountError = true
+            uiState.errorMessage = "Amount must be a number"
+        } finally {
+            uiState.amount = input.filter { !it.isWhitespace() }
+        }
+    }
+
     suspend fun saveWorkout() {
-        if (uiState.dayError || uiState.monthError || uiState.yearError) return
+        if (uiState.dayError || uiState.monthError || uiState.yearError || uiState.amountError) return
 
         uiState.errorMessage = ""
-        uiState.titleError = false
-        uiState.descriptionError = false
+        uiState.unitError = false
+        uiState.typeError = false
 
-        if (uiState.title.isEmpty()) {
-            uiState.titleError = true
-            uiState.errorMessage = "Title cannot be blank"
+        if (uiState.unit.isEmpty()) {
+            uiState.unitError = true
+            uiState.errorMessage = "Unit cannot be blank"
             return
         }
-        if (uiState.description.isEmpty()) {
-            uiState.descriptionError = true
-            uiState.errorMessage = "Description cannot be blank"
+        if (uiState.type.isEmpty()) {
+            uiState.typeError = true
+            uiState.errorMessage = "Type cannot be blank"
             return
         }
 
-//        val workout = TrainingPlanRepository.getTrainingPlan(code!!).workouts.find { it!!.date == date } ?: return
-//        TrainingPlanRepository.updateWorkout(
-//            workout.copy(
-//                title = uiState.title,
-//                description = uiState.description,
-//                date = "${uiState.year}-${uiState.month}-${uiState.day}",
-//                restDay = uiState.restDay
-//            )
-//        )
+        val workout = WorkoutsRepository.getWorkouts(code!!).find { it.date == date } ?: return
+        WorkoutsRepository.updateWorkout(
+            workout.copy(
+                date = "${uiState.year}-${uiState.month}-${uiState.day}",
+                amount = uiState.amount.toInt(),
+                type = uiState.unit,
+                unit = uiState.type,
+                description = uiState.description,
+                restDay = uiState.restDay
+            )
+        )
 
         uiState.saveSuccess = true
     }

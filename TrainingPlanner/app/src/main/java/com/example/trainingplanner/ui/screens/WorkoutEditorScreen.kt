@@ -3,6 +3,7 @@ package com.example.trainingplanner.ui.screens
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
@@ -50,19 +51,6 @@ fun WorkoutEditorScreen(navHostController: NavHostController, date: String?, cod
                     .padding(16.dp)
             ) {
                 Text(text = state.heading, style = MaterialTheme.typography.headlineSmall)
-                FormField(
-                    value = state.title,
-                    onValueChange = { state.title = it },
-                    placeholder = { Text("Title") },
-                    error = state.titleError
-                )
-                FormField(
-                    value = state.description,
-                    onValueChange = { state.description = it },
-                    placeholder = { Text("Description") },
-                    error = state.descriptionError
-                )
-
                 Row(
                     modifier = Modifier.fillMaxWidth()
                 ) {
@@ -74,6 +62,7 @@ fun WorkoutEditorScreen(navHostController: NavHostController, date: String?, cod
                         onValueChange = { viewModel.updateDay(it) },
                         placeholder = { Text("") },
                         label = { Text("Day") },
+                        enabled = false,
                         readOnly = true,
                         isError = state.dayError
                     )
@@ -85,6 +74,7 @@ fun WorkoutEditorScreen(navHostController: NavHostController, date: String?, cod
                         onValueChange = { viewModel.updateMonth(it) },
                         placeholder = { Text("") },
                         label = { Text("Month") },
+                        enabled = false,
                         readOnly = true,
                         isError = state.monthError
                     )
@@ -96,10 +86,51 @@ fun WorkoutEditorScreen(navHostController: NavHostController, date: String?, cod
                         onValueChange = { viewModel.updateYear(it) },
                         placeholder = { Text("") },
                         label = { Text("Year") },
+                        enabled = false,
                         readOnly = true,
                         isError = state.yearError
                     )
                 }
+                Row(
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    OutlinedTextField(
+                        modifier = Modifier
+                            .padding(horizontal = 4.dp)
+                            .weight(1f),
+                        value = state.type,
+                        onValueChange = { state.type = it },
+                        placeholder = { Text("") },
+                        label = { Text("Type") },
+                        isError = state.typeError
+                    )
+                    OutlinedTextField(
+                        modifier = Modifier
+                            .padding(horizontal = 4.dp)
+                            .weight(1f),
+                        value = state.unit,
+                        onValueChange = { state.unit = it },
+                        placeholder = { Text("") },
+                        label = { Text("Units") },
+                        isError = state.unitError
+                    )
+                    OutlinedTextField(
+                        modifier = Modifier
+                            .padding(horizontal = 4.dp)
+                            .weight(1f),
+                        value = state.amount,
+                        onValueChange = { viewModel.updateAmount(it) },
+                        placeholder = { Text("") },
+                        label = { Text("Amount") },
+                        isError = state.amountError
+                    )
+                }
+                Spacer(modifier = Modifier.padding(4.dp))
+                FormField(
+                    value = state.description,
+                    onValueChange = { state.description = it },
+                    placeholder = { Text("Description") },
+                )
 
                 Row(
                     horizontalArrangement = Arrangement.End,

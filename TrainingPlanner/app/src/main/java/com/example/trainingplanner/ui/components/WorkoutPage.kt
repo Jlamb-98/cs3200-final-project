@@ -30,8 +30,10 @@ import com.example.trainingplanner.ui.theme.TrainingPlannerTheme
 fun WorkoutPage(
     workout: Workout,
     username: String,
+    userIsOrganizer: Boolean = false,
     offsetX: Float = 0f,
-    toggle: () -> Unit = {}
+    toggle: () -> Unit = {},
+    onEditPressed: () -> Unit = {}
 ) {
     // TODO: Make this look nicer
     Surface(
@@ -46,23 +48,31 @@ fun WorkoutPage(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(text = workout.date!!, fontWeight = FontWeight.Bold)
-            Text(
-                text = "${workout.amount} ${workout.unit} ${workout.type}",
-                fontWeight = FontWeight.Bold,
-                style = MaterialTheme.typography.headlineMedium,
-            )
-            Text(text = workout.description ?: "No description")
-            Button(onClick = toggle) {
-                if (!workout.membersCompleted.contains(username)) {
-                    Text(text = "Mark as Complete")
-                } else {
-                    Text(text = "Undo Completion")
+            if (workout.restDay == true) {
+                Text(text = "Rest Day!!!")
+            } else {
+                Text(
+                    text = "${workout.amount} ${workout.unit} ${workout.type}",
+                    fontWeight = FontWeight.Bold,
+                    style = MaterialTheme.typography.headlineMedium,
+                )
+                Text(text = workout.description ?: "No description")
+                Button(onClick = toggle) {
+                    if (!workout.membersCompleted.contains(username)) {
+                        Text(text = "Mark as Complete")
+                    } else {
+                        Text(text = "Undo Completion")
+                    }
                 }
-            }
-
-            LazyColumn() {
-                items(workout.membersCompleted) {member ->
-                    MemberItem(username = member!!)
+                if (userIsOrganizer) {
+                    IconButton(onClick = onEditPressed) {
+                        Icon(imageVector = Icons.Default.Edit, contentDescription = "Edit Workout")
+                    }
+                }
+                LazyColumn() {
+                    items(workout.membersCompleted) {member ->
+                        MemberItem(username = member!!)
+                    }
                 }
             }
         }
