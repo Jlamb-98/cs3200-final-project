@@ -47,7 +47,7 @@ class NewPlanViewModel(application: Application): AndroidViewModel(application) 
 
         if (!TrainingPlanRepository.addMember(uiState.planCode.uppercase(), uiState.user!!.id!!)) {
             uiState.planCodeError = true
-            uiState.errorMessage = "Cannot find Training Plan from code"
+            uiState.errorMessage = "Cannot find Training Plan"
             return
         }
 

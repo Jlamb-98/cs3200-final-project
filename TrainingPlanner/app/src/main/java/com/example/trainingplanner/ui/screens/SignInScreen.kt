@@ -66,7 +66,7 @@ fun SignInScreen(navHostController: NavHostController) {
                     }
                     Button(onClick = { scope.launch {
                         viewModel.signIn()
-                        if (UserRepository.getCurrentUserId() != null && UserRepository.getUser().trainingPlanId.isNotEmpty()) {
+                        if (UserRepository.getCurrentUserId() != null && UserRepository.getUser().trainingPlanCode.isNotEmpty()) {
                             navHostController.navigate(Routes.appNavigation.route) {
                                 popUpTo(navHostController.graph.id) {
                                     inclusive = true

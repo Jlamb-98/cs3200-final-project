@@ -30,10 +30,8 @@ import com.example.trainingplanner.ui.theme.TrainingPlannerTheme
 fun WorkoutPage(
     workout: Workout,
     username: String,
-    userIsOrganizer: Boolean = false,
     offsetX: Float = 0f,
-    toggle: () -> Unit = {},
-    onEditPressed: () -> Unit = {}
+    toggle: () -> Unit = {}
 ) {
     // TODO: Make this look nicer
     Surface(
@@ -48,37 +46,23 @@ fun WorkoutPage(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(text = workout.date!!, fontWeight = FontWeight.Bold)
-            if (workout.title == null) {
-                Text("No workout scheduled")
-                if (userIsOrganizer) {
-                    Button(onClick = onEditPressed) {
-                        Text("Create workout")
-                    }
+            Text(
+                text = "${workout.amount} ${workout.unit} ${workout.type}",
+                fontWeight = FontWeight.Bold,
+                style = MaterialTheme.typography.headlineMedium,
+            )
+            Text(text = workout.description ?: "No description")
+            Button(onClick = toggle) {
+                if (!workout.membersCompleted.contains(username)) {
+                    Text(text = "Mark as Complete")
+                } else {
+                    Text(text = "Undo Completion")
                 }
-            } else {
-                Text(
-                    text = workout.title,
-                    fontWeight = FontWeight.Bold,
-                    style = MaterialTheme.typography.headlineMedium,
-                )
-                Text(text = workout.description ?: "No description")
-                Button(onClick = toggle) {
-                    if (!workout.membersCompleted.contains(username)) {
-                        Text(text = "Mark as Complete")
-                    } else {
-                        Text(text = "Undo Completion")
-                    }
-                }
-                if (userIsOrganizer) {
-                    IconButton(onClick = onEditPressed, content = {
-                        Icon(imageVector = Icons.Default.Edit, contentDescription = "Edit button")
-                    })
-                }
+            }
 
-                LazyColumn() {
-                    items(workout.membersCompleted) {member ->
-                        MemberItem(username = member!!)
-                    }
+            LazyColumn() {
+                items(workout.membersCompleted) {member ->
+                    MemberItem(username = member!!)
                 }
             }
         }
@@ -91,13 +75,15 @@ fun CreatedWorkoutPagePreview() {
     TrainingPlannerTheme {
         WorkoutPage(
             workout = Workout(
-                title = "4 mile run",
-                description = "go on a 4 mile run",
                 date = "2000-01-02",
+                amount = 2,
+                unit = "mile",
+                type = "run",
+                description = "go on a 4 mile run",
+                restDay = false,
                 membersCompleted = mutableListOf("BillyRuns", "HarryFastCheeks"),
             ),
             username = "Fred123",
-            userIsOrganizer = true
         )
     }
 }

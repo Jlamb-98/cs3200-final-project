@@ -10,7 +10,7 @@ data class TrainingPlan(
     val startDate: String? = null,
     val eventDate: String? = null,
     val members: MutableList<Member?> = mutableListOf(null),
-    val workouts: MutableList<Workout?> = mutableListOf(null),
+//    val workouts: MutableList<Workout?> = mutableListOf(null),
 //    val organizer: Member? = null,
 //    val organizerId: String? = null,
 //    val name: String? = null,

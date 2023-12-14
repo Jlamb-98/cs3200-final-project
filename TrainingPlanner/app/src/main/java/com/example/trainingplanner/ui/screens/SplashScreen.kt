@@ -25,7 +25,7 @@ fun SplashScreen(navHostController: NavHostController) {
             if (UserRepository.getCurrentUserId() == null) {
                 println("Splash Screen to Launch Navigation")
                 Routes.launchNavigation.route
-            } else if (UserRepository.getUser().trainingPlanId.isEmpty()) {
+            } else if (UserRepository.getUser().trainingPlanCode.isEmpty()) {
                 println("Splash Screen to New Plan Screen")
                 Routes.newPlanScreen.route
             } else {

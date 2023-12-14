@@ -11,58 +11,56 @@ object WorkoutsRepository {
     private val workoutsCache = mutableListOf<Workout>()
     private var cacheInitialized = false
 
-    suspend fun getWorkouts(): List<Workout> {
+    suspend fun getWorkouts(code: String): List<Workout> {
         if (!cacheInitialized) {
             cacheInitialized = true
-            val snapshot = Firebase.firestore
-                .collection("users")
-                .document(UserRepository.getCurrentUserId()!!)
-//                .whereArrayContains("members", UserRepository.getCurrentUserId()!!)
-                .get()
-                .await()
-            val trainingPlanId = snapshot.get("trainingPlanId").toString()
 
             val workouts = Firebase.firestore
                 .collection("workouts")
-                .whereEqualTo("trainingPlanId", trainingPlanId)
+                .whereEqualTo("trainingPlanCode", code)
                 .get()
                 .await()
             workoutsCache.addAll(workouts.toObjects())
+            workoutsCache.sortBy { it.date }
         }
         return workoutsCache
     }
 
     suspend fun createWorkout(
-//        groupId: String,
-        title: String,
+        trainingPlanCode: String,
+        date: LocalDate,
+        amount: Int,
+        unit: String,
+        type: String,
         description: String,
-        date: LocalDate
+        restDay: Boolean
     ): Workout {
         val doc = Firebase.firestore.collection("workouts").document()
         val workout = Workout(
-//            id = doc.id,
-//            userId = UserRepository.getCurrentUserId(),
-//            groupId = groupId,  //TODO: can I pass this value in or do I need to get it from Firebase??
-            title = title,
-            description = description,
+            id = doc.id,
+            trainingPlanCode = trainingPlanCode,
             date = date.toString(),
-            membersCompleted = mutableListOf(""),
+            amount = amount,
+            unit = unit,
+            type = type,
+            description = description,
+            restDay = restDay,
         )
         doc.set(workout).await()
         workoutsCache.add(workout)
         return workout
     }
 
-//    suspend fun updateWorkout(workout: Workout) {
-//        Firebase.firestore
-//            .collection("workouts")
-//            .document(workout.id!!)
-//            .set(workout)
-//            .await()
-//
-//        val oldWorkoutIndex = workoutsCache.indexOfFirst {
-//            it.id == workout.id
-//        }
-//        workoutsCache[oldWorkoutIndex] = workout
-//    }
+    suspend fun updateWorkout(workout: Workout) {
+        Firebase.firestore
+            .collection("workouts")
+            .document(workout.id!!)
+            .set(workout)
+            .await()
+
+        val oldWorkoutIndex = workoutsCache.indexOfFirst {
+            it.id == workout.id
+        }
+        workoutsCache[oldWorkoutIndex] = workout
+    }
 }

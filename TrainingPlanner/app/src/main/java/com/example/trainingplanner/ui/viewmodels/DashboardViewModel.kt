@@ -4,7 +4,6 @@ import android.app.Application
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.spring
 import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.AndroidViewModel
 import com.example.trainingplanner.ui.models.TrainingPlan
 import com.example.trainingplanner.ui.models.Workout
@@ -16,7 +15,7 @@ import java.time.LocalDate
 class DashboardScreenState {
     val OFFSET = 1000f   // TODO: does my offset adjust based on screen size??
     val _workouts = mutableStateListOf<Workout>()
-    var workouts = mutableListOf<Workout?>()
+    val workouts: List<Workout> get() = _workouts
     var currentWorkout = 0
     var workoutsReady = false
 
@@ -36,7 +35,7 @@ class DashboardViewModel(application: Application): AndroidViewModel(application
         uiState.workoutsReady = false
         println("getting training plan")
         val user = UserRepository.getUser()
-        uiState.code = user.trainingPlanId.first()!!
+        uiState.code = user.trainingPlanCode.first()!!
         uiState.username = user.username!!
         uiState.trainingPlan = TrainingPlanRepository.getTrainingPlan(uiState.code)
         val startDate = LocalDate.parse(uiState.trainingPlan.startDate)
@@ -51,19 +50,26 @@ class DashboardViewModel(application: Application): AndroidViewModel(application
         }
 
         // get workouts
-        val workouts = uiState.trainingPlan.workouts
         println("getting workouts")
-        uiState.workouts = workouts
+        val workouts = WorkoutsRepository.getWorkouts(uiState.code)
+        uiState._workouts.clear()
+        uiState._workouts.addAll(workouts)
         val date = uiState.selectedDate
-        uiState.currentWorkout = uiState.workouts.indexOfFirst { LocalDate.parse(it?.date) == date }
+        uiState.currentWorkout = uiState.workouts.indexOfFirst { LocalDate.parse(it.date) == date }
+        println(uiState.currentWorkout)
         uiState.workoutsReady = true
     }
 
     suspend fun toggleCompletion(workout: Workout) {
+        val username = UserRepository.getUser().username
         val workoutCopy = workout.copy()
-        workoutCopy.membersCompleted.add(UserRepository.getUser().username)
+        if (workout.membersCompleted.contains(username)) {
+            workoutCopy.membersCompleted.remove(username)
+        } else {
+            workoutCopy.membersCompleted.add(username)
+        }
         uiState._workouts[uiState._workouts.indexOf(workout)] = workoutCopy
-        TrainingPlanRepository.updateWorkout(workoutCopy)
+        WorkoutsRepository.updateWorkout(workoutCopy)
     }
 
     suspend fun dragPage(change: Float) {

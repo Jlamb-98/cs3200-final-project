@@ -33,14 +33,7 @@ object TrainingPlanRepository {
         startDate: LocalDate,
         eventDate: LocalDate,
     ): TrainingPlan {
-        // create empty workout list for time period
-        val workouts = mutableListOf<Workout?>()
-        var currentDate = startDate
-        while (currentDate.isBefore(eventDate) || currentDate.isEqual(eventDate)) {
-            workouts.add(Workout(date = currentDate.toString()))
-            currentDate = currentDate.plusDays(1)
-        }
-
+        // create trainingPlan document from code
         val code = generateRandomCode(6)    // TODO: could check for repeat code
         val doc = Firebase.firestore.collection("trainingPlans").document(code)
         val trainingPlan = TrainingPlan(
@@ -54,41 +47,32 @@ object TrainingPlanRepository {
                     userId = UserRepository.getCurrentUserId(),
                     role = "organizer"
                 )
-            ),
-            workouts = workouts
+            )
         )
         doc.set(trainingPlan).await()
+
+        // create workout list for time period
+        var currentDate = startDate
+        while (currentDate.isBefore(eventDate) || currentDate.isEqual(eventDate)) {
+            WorkoutsRepository.createWorkout(
+                code,
+                currentDate,
+                2,
+                "mile",
+                "run",
+                "go fast",
+                false
+            )
+            currentDate = currentDate.plusDays(1)
+        }
 
         UserRepository.addTrainingPlan(code)
 
         return trainingPlan
     }
 
-    suspend fun updateWorkout(workout: Workout) {
-        val trainingPlanRef = Firebase.firestore
-            .collection("trainingPlans")
-            .document(trainingPlanCache.code!!)
-
-        val document = workoutsCollectionRef
-            .whereEqualTo("date", workout.date)
-            .get()
-            .await()
-            .documents
-
-        println(workoutsCollectionRef)
-        println(document)
-
-        if (document.firstOrNull() != null) {
-//            val workoutId = document.id
-//            val workoutDocumentRef = workoutsCollectionRef.document(workoutId)
-//            workoutDocumentRef.set(workout)
-        } else {
-            println("No workout found for ${workout.date}")
-        }
-        val oldWorkoutIndex = trainingPlanCache.workouts.indexOfFirst {
-            it?.date == workout.date
-        }
-        trainingPlanCache.workouts[oldWorkoutIndex] = workout
+    suspend fun updateTrainingPlan(trainingPlan: TrainingPlan) {
+        // TODO: rewrite entire training plan
     }
 
     suspend fun addMember(code: String, userId: String): Boolean {

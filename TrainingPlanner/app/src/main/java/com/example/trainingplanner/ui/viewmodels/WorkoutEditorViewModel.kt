@@ -46,16 +46,16 @@ class WorkoutEditorViewModel(application: Application): AndroidViewModel(applica
             return
         }
 
-        uiState.heading = "Edit Workout"
-        this.date = date
-        this.code = code
-        val workout = TrainingPlanRepository.getTrainingPlan(code).workouts.find { it!!.date == date } ?: return
-        uiState.title = workout.title ?: ""
-        uiState.description = workout.description ?: ""
-        uiState.day = "${LocalDate.parse(workout.date).dayOfMonth}" // TODO: fix these dumb conversions
-        uiState.month = "${LocalDate.parse(workout.date).monthValue}"
-        uiState.year = "${LocalDate.parse(workout.date).year}"
-        uiState.restDay = workout.restDay ?: false
+//        uiState.heading = "Edit Workout"
+//        this.date = date
+//        this.code = code
+//        val workout = TrainingPlanRepository.getTrainingPlan(code).workouts.find { it!!.date == date } ?: return
+//        uiState.title = workout.title ?: ""
+//        uiState.description = workout.description ?: ""
+//        uiState.day = "${LocalDate.parse(workout.date).dayOfMonth}" // TODO: fix these dumb conversions
+//        uiState.month = "${LocalDate.parse(workout.date).monthValue}"
+//        uiState.year = "${LocalDate.parse(workout.date).year}"
+//        uiState.restDay = workout.restDay ?: false
     }
 
     fun updateDay(input: String) {
@@ -115,15 +115,15 @@ class WorkoutEditorViewModel(application: Application): AndroidViewModel(applica
             return
         }
 
-        val workout = TrainingPlanRepository.getTrainingPlan(code!!).workouts.find { it!!.date == date } ?: return
-        TrainingPlanRepository.updateWorkout(
-            workout.copy(
-                title = uiState.title,
-                description = uiState.description,
-                date = "${uiState.year}-${uiState.month}-${uiState.day}",
-                restDay = uiState.restDay
-            )
-        )
+//        val workout = TrainingPlanRepository.getTrainingPlan(code!!).workouts.find { it!!.date == date } ?: return
+//        TrainingPlanRepository.updateWorkout(
+//            workout.copy(
+//                title = uiState.title,
+//                description = uiState.description,
+//                date = "${uiState.year}-${uiState.month}-${uiState.day}",
+//                restDay = uiState.restDay
+//            )
+//        )
 
         uiState.saveSuccess = true
     }

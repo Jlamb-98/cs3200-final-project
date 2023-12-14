@@ -80,7 +80,7 @@ object UserRepository {
         val snapshot = Firebase.firestore
             .collection("users")
             .document(getCurrentUserId()!!)
-            .update("trainingPlanId", FieldValue.arrayUnion(code))
+            .update("trainingPlanCode", FieldValue.arrayUnion(code))
     }
 
 //    suspend fun getUserTrainingPlan(): String {
