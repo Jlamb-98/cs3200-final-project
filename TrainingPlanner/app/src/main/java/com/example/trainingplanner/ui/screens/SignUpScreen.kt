@@ -87,7 +87,7 @@ fun SignUpScreen(navHostController: NavHostController) {
                             scope.launch {
                                 viewModel.signUp()
                                 if (UserRepository.getCurrentUserId() != null) {
-                                    navHostController.navigate(Routes.newPlanScreen.route) {
+                                    navHostController.navigate(Routes.joinPlanScreen.route) {
                                         popUpTo(navHostController.graph.id) {
                                             inclusive = true
                                         }

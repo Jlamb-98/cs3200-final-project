@@ -23,14 +23,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import com.example.trainingplanner.ui.components.FormField
 import com.example.trainingplanner.ui.navigation.Routes
 import com.example.trainingplanner.ui.viewmodels.NewPlanViewModel
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NewPlanScreen(navHostController: NavHostController) {
+fun JoinPlanScreen(navHostController: NavHostController) {
     val viewModel: NewPlanViewModel = viewModel()
     val scope = rememberCoroutineScope()
     val state = viewModel.uiState

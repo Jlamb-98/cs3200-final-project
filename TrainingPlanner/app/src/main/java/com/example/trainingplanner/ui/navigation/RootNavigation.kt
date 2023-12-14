@@ -1,26 +1,34 @@
 package com.example.trainingplanner.ui.navigation
 
+import android.content.ClipData
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.rounded.Share
 import androidx.compose.material3.Divider
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
 import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -29,16 +37,14 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
 import com.example.trainingplanner.ui.repositories.UserRepository
 import com.example.trainingplanner.ui.screens.DashboardScreen
 import com.example.trainingplanner.ui.screens.LaunchScreen
-import com.example.trainingplanner.ui.screens.NewPlanScreen
+import com.example.trainingplanner.ui.screens.JoinPlanScreen
 import com.example.trainingplanner.ui.screens.SignInScreen
 import com.example.trainingplanner.ui.screens.SignUpScreen
 import com.example.trainingplanner.ui.screens.SplashScreen
 import com.example.trainingplanner.ui.screens.TrainingPlanEditorScreen
-import com.example.trainingplanner.ui.screens.WorkoutEditorScreen
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -99,14 +105,7 @@ fun RootNavigation() {
                         }
                     )
                 }
-            },
-//            floatingActionButton = {
-//                if (currentDestination?.route == Routes.dashboard.route) {
-//                    FloatingActionButton(onClick = { navController.navigate(Routes.workoutEditor.route) }) {
-//                        Icon(imageVector = Icons.Default.Add, contentDescription = "Workout Edit")
-//                    }
-//                }
-//            }
+            }
         ) {
             NavHost(
                 navController = navController,
@@ -117,22 +116,21 @@ fun RootNavigation() {
                     composable(route = Routes.launch.route) { LaunchScreen(navController) }
                     composable(route = Routes.signIn.route) { SignInScreen(navController) }
                     composable(route = Routes.signUp.route) { SignUpScreen(navController) }
-                    composable(route = Routes.newPlanScreen.route) { NewPlanScreen(navController) }
+                    composable(route = Routes.joinPlanScreen.route) { JoinPlanScreen(navController) }
                 }
                 navigation(route = Routes.appNavigation.route, startDestination = Routes.dashboard.route) {
                     composable(route = Routes.dashboard.route) { DashboardScreen(navController) }
-//                    composable(route = Routes.invite.route) { InviteScreen(navController) }
                     composable(route = Routes.trainingPlanEditor.route) { TrainingPlanEditorScreen(navController) }
-                    composable(
-                        route = "${Routes.workoutEditor.route}?date={date}&code={code}",
-                        arguments = listOf(
-                            navArgument("date") { defaultValue = "new" },
-                            navArgument("code") { defaultValue = "new" }
-                        )
-                    ) { navBackStackEntry ->
-                        WorkoutEditorScreen(navController, navBackStackEntry.arguments?.getString("date"), navBackStackEntry.arguments?.getString("code"))
-                    }
 //                    composable(route = Routes.payment.route) { PaymentScreen(navController) }
+//                    composable(
+//                        route = "${Routes.workoutEditor.route}?date={date}&code={code}",
+//                        arguments = listOf(
+//                            navArgument("date") { defaultValue = "new" },
+//                            navArgument("code") { defaultValue = "new" }
+//                        )
+//                    ) { navBackStackEntry ->
+//                        WorkoutEditorScreen(navController, navBackStackEntry.arguments?.getString("date"), navBackStackEntry.arguments?.getString("code"))
+//                    }
                 }
                 composable(route = Routes.splashScreen.route) { SplashScreen(navController) }
             }

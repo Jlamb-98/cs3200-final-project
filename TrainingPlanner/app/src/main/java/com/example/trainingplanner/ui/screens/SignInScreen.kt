@@ -73,7 +73,7 @@ fun SignInScreen(navHostController: NavHostController) {
                                 }
                             }
                         } else {
-                            navHostController.navigate(Routes.newPlanScreen.route) {
+                            navHostController.navigate(Routes.joinPlanScreen.route) {
                                 popUpTo(navHostController.graph.id) {
                                     inclusive = true
                                 }
