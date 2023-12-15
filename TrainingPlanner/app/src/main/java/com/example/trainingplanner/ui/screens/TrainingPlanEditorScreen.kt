@@ -52,6 +52,7 @@ fun TrainingPlanEditorScreen(navHostController: NavHostController) {
             ) {
                 Text(text = state.heading, style = MaterialTheme.typography.headlineSmall)
 
+                // General event details
                 FormField(
                     value = state.eventName,
                     onValueChange = { state.eventName = it },
@@ -77,6 +78,44 @@ fun TrainingPlanEditorScreen(navHostController: NavHostController) {
                     error = state.eventDateError
                 )
 
+                // Specify workout types for days of the week
+//                Text("Mondays")
+//                Row(
+//                    modifier = Modifier.fillMaxWidth()
+//                ) {
+//                    OutlinedTextField(
+//                        modifier = Modifier
+//                            .padding(horizontal = 4.dp)
+//                            .weight(1f),
+//                        value = state.type,
+//                        onValueChange = { state.type = it },
+//                        placeholder = { Text("") },
+//                        label = { Text("Type") },
+//                        isError = state.typeError
+//                    )
+//                    OutlinedTextField(
+//                        modifier = Modifier
+//                            .padding(horizontal = 4.dp)
+//                            .weight(1f),
+//                        value = state.unit,
+//                        onValueChange = { state.unit = it },
+//                        placeholder = { Text("") },
+//                        label = { Text("Units") },
+//                        isError = state.unitError
+//                    )
+//                    OutlinedTextField(
+//                        modifier = Modifier
+//                            .padding(horizontal = 4.dp)
+//                            .weight(1f),
+//                        value = state.amount,
+//                        onValueChange = { viewModel.updateAmount(it) },
+//                        placeholder = { Text("") },
+//                        label = { Text("Amount") },
+//                        isError = state.amountError
+//                    )
+//                }
+
+                // Buttons and error message
                 Row(
                     horizontalArrangement = Arrangement.End,
                     modifier = Modifier.fillMaxWidth()

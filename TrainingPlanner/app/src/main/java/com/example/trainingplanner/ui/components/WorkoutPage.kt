@@ -64,15 +64,15 @@ fun WorkoutPage(
                         Text(text = "Undo Completion")
                     }
                 }
-                if (userIsOrganizer) {
-                    IconButton(onClick = onEditPressed) {
-                        Icon(imageVector = Icons.Default.Edit, contentDescription = "Edit Workout")
-                    }
+            }
+            if (userIsOrganizer) {
+                IconButton(onClick = onEditPressed) {
+                    Icon(imageVector = Icons.Default.Edit, contentDescription = "Edit Workout")
                 }
-                LazyColumn() {
-                    items(workout.membersCompleted) {member ->
-                        MemberItem(username = member!!)
-                    }
+            }
+            LazyColumn() {
+                items(workout.membersCompleted) {member ->
+                    MemberItem(username = member!!)
                 }
             }
         }
