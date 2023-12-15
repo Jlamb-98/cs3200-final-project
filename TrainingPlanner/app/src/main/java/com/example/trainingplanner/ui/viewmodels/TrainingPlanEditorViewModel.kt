@@ -5,7 +5,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.AndroidViewModel
+import com.example.trainingplanner.ui.models.DayInfo
 import com.example.trainingplanner.ui.repositories.TrainingPlanRepository
+import java.time.DayOfWeek
 import java.time.LocalDate
 
 class TrainingPlanEditorScreenState {
@@ -13,6 +15,14 @@ class TrainingPlanEditorScreenState {
     var description by mutableStateOf("")
     var startDate by mutableStateOf("")
     var eventDate by mutableStateOf("")
+
+    var daysOfWeek by mutableStateOf (DayOfWeek.values().map { DayInfo(it.name) })
+    var startAmount by mutableStateOf("")
+    var stepAmount by mutableStateOf("")
+    var stepFrequency by mutableStateOf("")
+    var unit by mutableStateOf("")
+    var type by mutableStateOf("")
+    var restDay by mutableStateOf(false)
 
     var descriptionError by mutableStateOf(false)
     var eventNameError by mutableStateOf(false)
