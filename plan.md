@@ -16,10 +16,10 @@ In a full app, a user could be a member of one group and an organizer of another
 * [x] As a user, I should be able to log in.
 * [x] As a user, I should be able to join a training plan.
 * [x] As a member, I should be able to view each day's workout.
-* [ ] As a member, I should be able to check off completion of today's or a previous day's workout.
-* [ ] As a member, I should be able to see who else has completed each workout.
-* [ ] As an organizer, I should be able to create a training plan.
-* [ ] As an organizer, I should be able to invite others to join my training plan.
+* [x] As a member, I should be able to check off completion of today's or a previous day's workout.
+* [x] As a member, I should be able to see who else has completed each workout.
+* [x] As an organizer, I should be able to create a training plan.
+* [x] As an organizer, I should be able to invite others to join my training plan.
 * [ ] As an organizer, I should be able to edit/update my training plan.
 
 ### Nice to Have Features

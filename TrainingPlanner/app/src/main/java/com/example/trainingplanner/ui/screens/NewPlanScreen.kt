@@ -50,7 +50,7 @@ fun JoinPlanScreen(navHostController: NavHostController) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Button(onClick = { navHostController.navigate(Routes.trainingPlanEditor.route) }) {
+                Button(onClick = { navHostController.navigate(Routes.purchase.route) }) {
                     Text("Create new training plan")
                 }
 

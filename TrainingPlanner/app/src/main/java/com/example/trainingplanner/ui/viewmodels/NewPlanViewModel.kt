@@ -5,6 +5,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.AndroidViewModel
+import com.android.billingclient.api.BillingClient
+import com.android.billingclient.api.PurchasesUpdatedListener
 import com.example.trainingplanner.ui.models.User
 import com.example.trainingplanner.ui.repositories.TrainingPlanRepository
 import com.example.trainingplanner.ui.repositories.UserRepository
@@ -47,4 +49,6 @@ class NewPlanViewModel(application: Application): AndroidViewModel(application) 
 
         uiState.joinSuccess = true
     }
+
+
 }

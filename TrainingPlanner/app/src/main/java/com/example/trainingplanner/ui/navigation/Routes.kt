@@ -16,7 +16,7 @@ object Routes {
     val invite = Screen("invite")
     val trainingPlanEditor = Screen("planeditor")
     val workoutEditor = Screen("workouteditor")
-    val payment = Screen("payment")
+    val purchase = Screen("purchase")
 
     // extra-miler screens
     val calendarView = Screen("calendarview")

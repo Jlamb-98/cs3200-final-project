@@ -34,6 +34,7 @@ import com.example.trainingplanner.ui.repositories.UserRepository
 import com.example.trainingplanner.ui.screens.DashboardScreen
 import com.example.trainingplanner.ui.screens.JoinPlanScreen
 import com.example.trainingplanner.ui.screens.LaunchScreen
+import com.example.trainingplanner.ui.screens.PurchaseScreen
 import com.example.trainingplanner.ui.screens.SignInScreen
 import com.example.trainingplanner.ui.screens.SignUpScreen
 import com.example.trainingplanner.ui.screens.SplashScreen
@@ -115,11 +116,11 @@ fun RootNavigation() {
                     composable(route = Routes.signIn.route) { SignInScreen(navController) }
                     composable(route = Routes.signUp.route) { SignUpScreen(navController) }
                     composable(route = Routes.joinPlanScreen.route) { JoinPlanScreen(navController) }
+                    composable(route = Routes.purchase.route) { PurchaseScreen(navController) }
                 }
                 navigation(route = Routes.appNavigation.route, startDestination = Routes.dashboard.route) {
                     composable(route = Routes.dashboard.route) { DashboardScreen(navController) }
                     composable(route = Routes.trainingPlanEditor.route) { TrainingPlanEditorScreen(navController) }
-//                    composable(route = Routes.payment.route) { PaymentScreen(navController) }
                     composable(
                         route = "${Routes.workoutEditor.route}?date={date}&code={code}",
                         arguments = listOf(
