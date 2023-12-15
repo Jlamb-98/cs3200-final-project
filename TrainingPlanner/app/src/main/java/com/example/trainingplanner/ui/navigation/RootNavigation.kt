@@ -10,6 +10,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.rounded.Share
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.Divider
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -92,7 +93,7 @@ fun RootNavigation() {
         Scaffold(
             topBar = {
                 if (currentDestination?.hierarchy?.none { it.route == Routes.launchNavigation.route || it.route == Routes.splashScreen.route } == true) {
-                    TopAppBar(
+                    CenterAlignedTopAppBar(
                         title = { Text("Training Planner") },
                         navigationIcon = {
                             IconButton(onClick = {
@@ -104,7 +105,11 @@ fun RootNavigation() {
                             }) {
                                 Icon(imageVector = Icons.Default.Menu, contentDescription = "Menu button")
                             }
-                        }
+                        },
+                        colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                            containerColor = MaterialTheme.colorScheme.primaryContainer,
+                            titleContentColor = MaterialTheme.colorScheme.primary
+                        )
                     )
                 }
             }

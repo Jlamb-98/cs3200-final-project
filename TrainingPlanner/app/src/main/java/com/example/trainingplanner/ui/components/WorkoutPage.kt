@@ -2,7 +2,6 @@ package com.example.trainingplanner.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -19,12 +18,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.trainingplanner.ui.models.Workout
 import com.example.trainingplanner.ui.theme.TrainingPlannerTheme
+import java.time.LocalDate
 
 @Composable
 fun WorkoutPage(
@@ -35,7 +34,6 @@ fun WorkoutPage(
     toggle: () -> Unit = {},
     onEditPressed: () -> Unit = {}
 ) {
-    // TODO: Make this look nicer
     Surface(
         modifier = Modifier
             .fillMaxWidth()
@@ -47,7 +45,7 @@ fun WorkoutPage(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text(text = workout.date!!, fontWeight = FontWeight.Bold)
+            Text(text = reformatDate(workout.date!!), fontWeight = FontWeight.Bold)
             if (workout.restDay == true) {
                 Text(text = "Rest Day!!!")
             } else {
@@ -98,10 +96,11 @@ fun CreatedWorkoutPagePreview() {
     }
 }
 
-//@Preview
-//@Composable
-//fun NoWorkoutPagePreview() {
-//    TrainingPlannerTheme {
-//        WorkoutPage(workout = Workout())
-//    }
-//}
+fun reformatDate(date: String): String {
+    return when (val parsedDate = LocalDate.parse(date)) {
+        LocalDate.now().minusDays(1) -> "Yesterday"
+        LocalDate.now() -> "Today"
+        LocalDate.now().plusDays(1) -> "Tomorrow"
+        else -> "${parsedDate.dayOfWeek}, ${parsedDate.month} ${parsedDate.dayOfMonth}, ${parsedDate.year}"
+    }
+}
