@@ -1,7 +1,5 @@
 package com.example.trainingplanner.ui.models
 
-import java.time.LocalDate
-
 data class TrainingPlan(
 //    val id: String? = null,
     val code: String? = null,

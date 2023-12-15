@@ -2,16 +2,11 @@ package com.example.trainingplanner.ui.viewmodels
 
 import android.app.Application
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.AndroidViewModel
-import com.example.trainingplanner.ui.repositories.TrainingPlanRepository
 import com.example.trainingplanner.ui.repositories.WorkoutsRepository
-import com.google.firebase.Timestamp
-import java.time.Instant
 import java.time.LocalDate
-import java.time.ZoneId
 
 class WorkoutEditorScreenState {
     var day by mutableStateOf("")

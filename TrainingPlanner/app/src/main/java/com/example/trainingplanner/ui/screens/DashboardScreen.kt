@@ -6,14 +6,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -25,15 +21,11 @@ import androidx.compose.ui.input.pointer.positionChange
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import com.example.trainingplanner.ui.components.FormField
 import com.example.trainingplanner.ui.components.WorkoutPage
-import com.example.trainingplanner.ui.models.Workout
 import com.example.trainingplanner.ui.navigation.Routes
 import com.example.trainingplanner.ui.viewmodels.DashboardViewModel
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
-import java.net.URLEncoder
-import java.nio.charset.StandardCharsets
 import java.time.LocalDate
 
 @Composable
@@ -89,31 +81,31 @@ fun DashboardScreen(navHostController: NavHostController) {
                     }
                 }
         ) {
-            Box() {
+            Box {
                 if (state.workoutsReady) {
                     if (state.selectedDate > LocalDate.parse(state.trainingPlan.startDate)) {
                         WorkoutPage(
-                            workout = state.workouts[state.currentWorkout-1]!!,
+                            workout = state.workouts[state.currentWorkout-1],
                             username = state.username,
                             userIsOrganizer = state.userIsOrganizer,
                             offsetX = state.translation.value-state.OFFSET
                         )
                     }
                     WorkoutPage(
-                        workout = state.workouts[state.currentWorkout]!!,
+                        workout = state.workouts[state.currentWorkout],
                         username = state.username,
                         userIsOrganizer = state.userIsOrganizer,
                         offsetX = state.translation.value,
                         toggle = {
                             scope.launch {
-                                viewModel.toggleCompletion(state.workouts[state.currentWorkout]!!)
+                                viewModel.toggleCompletion(state.workouts[state.currentWorkout])
                             }
                         },
                         onEditPressed = { navHostController.navigate("${Routes.workoutEditor.route}?date=${state.selectedDate}&code=${state.code}") }
                     )
                     if (state.selectedDate < LocalDate.parse(state.trainingPlan.eventDate)) {
                         WorkoutPage(
-                            workout = state.workouts[state.currentWorkout+1]!!,
+                            workout = state.workouts[state.currentWorkout+1],
                             username = state.username,
                             userIsOrganizer = state.userIsOrganizer,
                             offsetX = state.translation.value+state.OFFSET

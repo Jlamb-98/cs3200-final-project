@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -24,7 +23,6 @@ import androidx.navigation.NavHostController
 import com.example.trainingplanner.ui.components.FormField
 import com.example.trainingplanner.ui.navigation.Routes
 import com.example.trainingplanner.ui.viewmodels.TrainingPlanEditorViewModel
-import com.example.trainingplanner.ui.viewmodels.WorkoutEditorViewModel
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)

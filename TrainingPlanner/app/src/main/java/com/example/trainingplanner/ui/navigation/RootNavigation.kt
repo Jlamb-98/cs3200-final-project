@@ -1,15 +1,8 @@
 package com.example.trainingplanner.ui.navigation
 
-import android.content.ClipData
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.rounded.Share
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.Divider
 import androidx.compose.material3.DrawerValue
@@ -22,14 +15,12 @@ import androidx.compose.material3.ModalNavigationDrawer
 import androidx.compose.material3.NavigationDrawerItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -41,8 +32,8 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.example.trainingplanner.ui.repositories.UserRepository
 import com.example.trainingplanner.ui.screens.DashboardScreen
-import com.example.trainingplanner.ui.screens.LaunchScreen
 import com.example.trainingplanner.ui.screens.JoinPlanScreen
+import com.example.trainingplanner.ui.screens.LaunchScreen
 import com.example.trainingplanner.ui.screens.SignInScreen
 import com.example.trainingplanner.ui.screens.SignUpScreen
 import com.example.trainingplanner.ui.screens.SplashScreen

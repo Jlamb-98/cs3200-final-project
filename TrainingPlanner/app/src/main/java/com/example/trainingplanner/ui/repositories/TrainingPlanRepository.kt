@@ -2,7 +2,6 @@ package com.example.trainingplanner.ui.repositories
 
 import com.example.trainingplanner.ui.models.Member
 import com.example.trainingplanner.ui.models.TrainingPlan
-import com.example.trainingplanner.ui.models.Workout
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.toObject

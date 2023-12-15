@@ -23,7 +23,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.trainingplanner.ui.models.Workout
 import com.example.trainingplanner.ui.theme.TrainingPlannerTheme
-import java.time.LocalDate
+import com.example.trainingplanner.util.reformatDate
 
 @Composable
 fun WorkoutPage(
@@ -68,7 +68,7 @@ fun WorkoutPage(
                     Icon(imageVector = Icons.Default.Edit, contentDescription = "Edit Workout")
                 }
             }
-            LazyColumn() {
+            LazyColumn {
                 items(workout.membersCompleted) {member ->
                     MemberItem(username = member!!)
                 }
@@ -96,11 +96,3 @@ fun CreatedWorkoutPagePreview() {
     }
 }
 
-fun reformatDate(date: String): String {
-    return when (val parsedDate = LocalDate.parse(date)) {
-        LocalDate.now().minusDays(1) -> "Yesterday"
-        LocalDate.now() -> "Today"
-        LocalDate.now().plusDays(1) -> "Tomorrow"
-        else -> "${parsedDate.dayOfWeek}, ${parsedDate.month} ${parsedDate.dayOfMonth}, ${parsedDate.year}"
-    }
-}
