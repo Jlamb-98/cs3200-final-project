@@ -139,15 +139,4 @@ class WorkoutEditorViewModel(application: Application): AndroidViewModel(applica
 
         uiState.saveSuccess = true
     }
-
-//    private fun timestampToLocalDate(timestamp: Timestamp): LocalDate {
-//        val instant: Instant = timestamp.toDate().toInstant()
-//        return instant.atZone(ZoneId.systemDefault()).toLocalDate()
-//    }
-//
-//    private fun createTimestamp(year: Int, month: Int, day: Int): Timestamp {
-//        val localDate = LocalDate.of(year, month, day)
-//        val instant = localDate.atStartOfDay(ZoneId.systemDefault()).toInstant()
-//        return Timestamp(Date.from(instant))
-//    }
 }

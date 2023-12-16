@@ -12,7 +12,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
@@ -31,10 +30,6 @@ fun TrainingPlanEditorScreen(navHostController: NavHostController) {
     val viewModel: TrainingPlanEditorViewModel = viewModel()
     val scope = rememberCoroutineScope()
     val state = viewModel.uiState
-
-    LaunchedEffect(true) {
-//        viewModel.setupInitialState(id)
-    }
 
     Column(
         modifier = Modifier

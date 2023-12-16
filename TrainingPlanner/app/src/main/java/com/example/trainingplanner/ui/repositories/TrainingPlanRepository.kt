@@ -36,7 +36,7 @@ object TrainingPlanRepository {
         daysOfWeek: List<DayInfo>
     ): TrainingPlan {
         // create trainingPlan document from code
-        val code = generateRandomCode(6)    // TODO: could check for repeat code
+        val code = generateRandomCode(6)    // should check for repeat code
         val doc = Firebase.firestore.collection("trainingPlans").document(code)
         val trainingPlan = TrainingPlan(
             code = code,

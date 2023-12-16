@@ -10,8 +10,4 @@ data class Workout(
     val description: String? = null,
     val restDay: Boolean? = null,
     val membersCompleted: MutableList<String?> = mutableListOf()   // list of usernames, not really dynamic
-) {
-//    fun getDate(): String {
-//        return LocalDate.of(year!!, month!!, day!!).toString()
-//    }
-}
+)

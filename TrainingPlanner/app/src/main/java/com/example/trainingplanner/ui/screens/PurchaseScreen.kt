@@ -9,7 +9,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -25,8 +24,6 @@ import com.example.trainingplanner.ui.viewmodels.PurchaseScreenViewModel
 @Composable
 fun PurchaseScreen(navHostController: NavHostController) {
     val viewModel: PurchaseScreenViewModel = viewModel()
-    val scope = rememberCoroutineScope()
-    val state = viewModel.uiState
     val context = LocalContext.current
 
     val billingClient = remember {

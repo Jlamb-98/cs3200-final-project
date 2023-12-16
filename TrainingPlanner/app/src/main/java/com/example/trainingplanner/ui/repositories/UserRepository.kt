@@ -13,8 +13,6 @@ class SignUpException(message: String?): RuntimeException(message)
 class SignInException(message: String?): RuntimeException(message)
 
 object UserRepository {
-//    private var userCache = User()
-//    private var cacheInitialized = false
 
     suspend fun createUser(email: String, password: String, username: String) {
         try {
@@ -45,15 +43,6 @@ object UserRepository {
     fun getCurrentUserId(): String? {
         return Firebase.auth.currentUser?.uid
     }
-
-//    suspend fun getUsername(): String? {
-//        val snapshot = Firebase.firestore
-//            .collection("users")
-//            .document(getCurrentUserId()!!)
-//            .get()
-//            .await()
-//        return snapshot.toObject()
-//    }
 
     suspend fun getUser(): User {
         val snapshot = Firebase.firestore
