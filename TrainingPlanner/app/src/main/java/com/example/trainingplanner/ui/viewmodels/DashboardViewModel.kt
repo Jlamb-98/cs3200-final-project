@@ -14,7 +14,7 @@ import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 
 class DashboardScreenState {
-    val OFFSET = 1000f   // TODO: does my offset adjust based on screen size??
+    val OFFSET = 1000f
     val _workouts = mutableStateListOf<Workout>()
     val workouts: List<Workout> get() = _workouts
     var currentWorkout = 0
@@ -60,7 +60,6 @@ class DashboardViewModel(application: Application): AndroidViewModel(application
         uiState._workouts.addAll(workouts)
         val date = uiState.selectedDate
         uiState.currentWorkout = uiState.workouts.indexOfFirst { LocalDate.parse(it.date) == date }
-        println(uiState.currentWorkout)
         uiState.workoutsReady = true
     }
 
@@ -92,7 +91,6 @@ class DashboardViewModel(application: Application): AndroidViewModel(application
             uiState.selectedDate = uiState.selectedDate.plusDays(1)
             uiState.translation.snapTo(0f)
         }
-        println("Selected Date: ${uiState.selectedDate}")
     }
 
     suspend fun animateToCenter() {

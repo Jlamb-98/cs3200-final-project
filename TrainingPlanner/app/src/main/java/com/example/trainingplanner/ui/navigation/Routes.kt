@@ -18,7 +18,7 @@ object Routes {
     val workoutEditor = Screen("workouteditor")
     val purchase = Screen("purchase")
 
-    // extra-miler screens
+    // extra screens if time
     val calendarView = Screen("calendarview")
     val settings = Screen("settings")
     val announcements = Screen("announcements")

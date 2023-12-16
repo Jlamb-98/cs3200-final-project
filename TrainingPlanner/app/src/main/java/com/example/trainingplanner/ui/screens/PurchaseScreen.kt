@@ -19,10 +19,8 @@ import androidx.navigation.NavHostController
 import com.android.billingclient.api.BillingClient
 import com.android.billingclient.api.BillingClientStateListener
 import com.android.billingclient.api.BillingResult
-import com.android.billingclient.api.PurchasesUpdatedListener
 import com.example.trainingplanner.ui.navigation.Routes
 import com.example.trainingplanner.ui.viewmodels.PurchaseScreenViewModel
-import kotlinx.coroutines.launch
 
 @Composable
 fun PurchaseScreen(navHostController: NavHostController) {
@@ -33,10 +31,10 @@ fun PurchaseScreen(navHostController: NavHostController) {
 
     val billingClient = remember {
         BillingClient.newBuilder(context)
-            .setListener(PurchasesUpdatedListener { billingResult, purchases ->
+            .setListener { billingResult, purchases ->
                 println("PurchasesUpdatedListener")
                 // purchase results would be assessed here
-            })
+            }
             .enablePendingPurchases()
             .build()
     }
@@ -45,12 +43,10 @@ fun PurchaseScreen(navHostController: NavHostController) {
         billingClient.startConnection(object : BillingClientStateListener {
             override fun onBillingSetupFinished(p0: BillingResult) {
                 println("Billing setup finished, connected to Google Play")
-                TODO("Not yet implemented")
             }
 
             override fun onBillingServiceDisconnected() {
                 println("onBillingServiceDisconnected")
-                TODO("Not yet implemented")
             }
         })
 

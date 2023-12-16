@@ -10,10 +10,10 @@ import com.example.trainingplanner.util.exampleTrainingPlan
 import java.time.LocalDate
 
 class TrainingPlanEditorScreenState {
-    var eventName by mutableStateOf("")
-    var description by mutableStateOf("")
-    var startDate by mutableStateOf("")
-    var eventDate by mutableStateOf("")
+    var eventName by mutableStateOf("Utah Valley Half Marathon")
+    var description by mutableStateOf("Let's go for sub 2 hours!!")
+    var startDate by mutableStateOf("2023-12-15")
+    var eventDate by mutableStateOf("2024-02-14")
 
     // replace with mutableStateOf (DayOfWeek.values().map { DayInfo(it.name) }) in actual use
     var daysOfWeek by mutableStateOf (exampleTrainingPlan())
@@ -32,29 +32,21 @@ class TrainingPlanEditorViewModel(application: Application): AndroidViewModel(ap
     val uiState = TrainingPlanEditorScreenState()
     var id: String? = null
 
-    suspend fun setupInitialState(code: String?) {
-        if (code == null || code == "new") {
-            uiState.heading = "Create Training Plan"
-            return
-        }
-
-        uiState.heading = "Edit Training Plan"
-        this.id = code
-        val trainingPlan = TrainingPlanRepository.getTrainingPlan(code)
-        uiState.description = trainingPlan.description ?: ""
-        uiState.eventName = trainingPlan.eventName ?: ""
-        uiState.eventDate = trainingPlan.eventDate ?: ""
-        uiState.startDate = trainingPlan.startDate ?: ""
-    }
-
     suspend fun saveTrainingPlan() {
 
         uiState.errorMessage = ""
         uiState.descriptionError = false
+        uiState.eventNameError = false
+        uiState.eventDateError = false
 
         if (uiState.eventName.isEmpty()) {
             uiState.eventNameError = true
             uiState.errorMessage = "Event name cannot be blank"
+            return
+        }
+        if (LocalDate.parse(uiState.eventDate).isBefore(LocalDate.parse(uiState.startDate))) {
+            uiState.eventDateError = true
+            uiState.errorMessage = "Event Date must be after Start Date"
             return
         }
 

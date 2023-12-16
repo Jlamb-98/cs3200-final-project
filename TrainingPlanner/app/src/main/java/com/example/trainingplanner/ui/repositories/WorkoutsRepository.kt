@@ -21,8 +21,8 @@ object WorkoutsRepository {
                 .get()
                 .await()
             workoutsCache.addAll(workouts.toObjects())
-            workoutsCache.sortBy { it.date }
         }
+        workoutsCache.sortBy { it.date }
         return workoutsCache
     }
 

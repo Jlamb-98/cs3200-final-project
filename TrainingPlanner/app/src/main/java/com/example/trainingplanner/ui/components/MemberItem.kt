@@ -27,10 +27,7 @@ fun MemberItem(
     Surface(
         shape = RoundedCornerShape(8.dp),
         modifier = Modifier
-//            .fillMaxWidth()
-            .clickable { /*TODO*/ }
             .padding(8.dp)
-//            .background(MaterialTheme.colorScheme.secondary)
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,

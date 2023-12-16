@@ -77,10 +77,6 @@ object TrainingPlanRepository {
         return trainingPlan
     }
 
-    suspend fun updateTrainingPlan(trainingPlan: TrainingPlan) {
-        // TODO: rewrite entire training plan
-    }
-
     suspend fun addMember(code: String, userId: String): Boolean {
         val trainingPlanRef = Firebase.firestore
             .collection("trainingPlans")

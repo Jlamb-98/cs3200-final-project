@@ -42,18 +42,6 @@ object UserRepository {
         }
     }
 
-    suspend fun editUsername(username: String) {
-        val user = User(
-            id = getCurrentUserId(),
-            username = username
-        )
-        Firebase.firestore
-            .collection("users")
-            .document(getCurrentUserId()!!)
-            .set(user)
-            .await()
-    }
-
     fun getCurrentUserId(): String? {
         return Firebase.auth.currentUser?.uid
     }
@@ -76,21 +64,12 @@ object UserRepository {
         return snapshot.toObject()!!
     }
 
-    suspend fun addTrainingPlan(code: String) {
-        val snapshot = Firebase.firestore
+    fun addTrainingPlan(code: String) {
+        Firebase.firestore
             .collection("users")
             .document(getCurrentUserId()!!)
             .update("trainingPlanCode", FieldValue.arrayUnion(code))
     }
-
-//    suspend fun getUserTrainingPlan(): String {
-//        val snapshot = Firebase.firestore // TODO: could create cache and get value from it
-//            .collection("users")
-//            .document(getCurrentUserId()!!)
-//            .get()
-//            .await()
-//        return snapshot.get("trainingPlanId").toString()
-//    }
 
     fun logout() {
         Firebase.auth.signOut()

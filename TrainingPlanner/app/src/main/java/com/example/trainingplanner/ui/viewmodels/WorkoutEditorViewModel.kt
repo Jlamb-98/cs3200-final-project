@@ -27,10 +27,6 @@ class WorkoutEditorScreenState {
     var errorMessage by mutableStateOf("")
     var saveSuccess by mutableStateOf(false)
 
-    var dayDropdownExpanded by mutableStateOf(false)
-    var monthDropdownExpanded by mutableStateOf(false)
-    var yearDropdownExpanded by mutableStateOf(false)
-
     var heading by mutableStateOf("")
 }
 
@@ -50,7 +46,7 @@ class WorkoutEditorViewModel(application: Application): AndroidViewModel(applica
         this.code = code
         val workout = WorkoutsRepository.getWorkouts(code).find { it.date == date } ?: return
         uiState.description = workout.description ?: ""
-        uiState.day = "${LocalDate.parse(workout.date).dayOfMonth}" // TODO: fix these dumb conversions
+        uiState.day = "${LocalDate.parse(workout.date).dayOfMonth}"
         uiState.month = "${LocalDate.parse(workout.date).monthValue}"
         uiState.year = "${LocalDate.parse(workout.date).year}"
         uiState.restDay = workout.restDay ?: false
