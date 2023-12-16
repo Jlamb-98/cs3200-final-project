@@ -133,7 +133,7 @@ class WorkoutEditorViewModel(application: Application): AndroidViewModel(applica
         WorkoutsRepository.updateWorkout(
             workout.copy(
                 date = "${uiState.year}-${uiState.month}-${uiState.day}",
-                amount = uiState.amount.toInt(),
+                amount = uiState.amount.toFloat(),
                 type = uiState.unit,
                 unit = uiState.type,
                 description = uiState.description,

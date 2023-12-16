@@ -5,9 +5,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.AndroidViewModel
-import com.example.trainingplanner.ui.models.DayInfo
 import com.example.trainingplanner.ui.repositories.TrainingPlanRepository
-import java.time.DayOfWeek
+import com.example.trainingplanner.util.exampleTrainingPlan
 import java.time.LocalDate
 
 class TrainingPlanEditorScreenState {
@@ -16,13 +15,8 @@ class TrainingPlanEditorScreenState {
     var startDate by mutableStateOf("")
     var eventDate by mutableStateOf("")
 
-    var daysOfWeek by mutableStateOf (DayOfWeek.values().map { DayInfo(it.name) })
-    var startAmount by mutableStateOf("")
-    var stepAmount by mutableStateOf("")
-    var stepFrequency by mutableStateOf("")
-    var unit by mutableStateOf("")
-    var type by mutableStateOf("")
-    var restDay by mutableStateOf(false)
+    // replace with mutableStateOf (DayOfWeek.values().map { DayInfo(it.name) }) in actual use
+    var daysOfWeek by mutableStateOf (exampleTrainingPlan())
 
     var descriptionError by mutableStateOf(false)
     var eventNameError by mutableStateOf(false)
@@ -54,7 +48,6 @@ class TrainingPlanEditorViewModel(application: Application): AndroidViewModel(ap
     }
 
     suspend fun saveTrainingPlan() {
-//        if (uiState.dayError || uiState.monthError || uiState.yearError) return
 
         uiState.errorMessage = ""
         uiState.descriptionError = false
@@ -69,22 +62,11 @@ class TrainingPlanEditorViewModel(application: Application): AndroidViewModel(ap
             TrainingPlanRepository.createTrainingPlan(
                 uiState.eventName,
                 uiState.description,
-                LocalDate.parse(uiState.startDate),   // TODO: read these as LocalDates from input
+                LocalDate.parse(uiState.startDate),
                 LocalDate.parse(uiState.eventDate),
+                uiState.daysOfWeek
             )
         }
-//        else {    // update existing workout
-//            val workout = WorkoutsRepository.getWorkouts().find { it.id == id } ?: return
-//            WorkoutsRepository.updateWorkout(
-//                workout.copy(
-//                    title = uiState.title,
-//                    description = uiState.description,
-//                    day = uiState.day.toInt(),
-//                    month = uiState.month.toInt(),
-//                    year = uiState.year.toInt()
-//                )
-//            )
-//        }
 
         uiState.saveSuccess = true
     }

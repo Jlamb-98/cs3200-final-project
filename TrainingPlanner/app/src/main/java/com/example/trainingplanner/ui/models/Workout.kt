@@ -4,7 +4,7 @@ data class Workout(
     val id: String? = null,
     val trainingPlanCode: String? = null,
     val date: String? = null,
-    val amount: Int? = null,
+    val amount: Float? = null,
     val unit: String? = null,
     val type: String? = null,
     val description: String? = null,

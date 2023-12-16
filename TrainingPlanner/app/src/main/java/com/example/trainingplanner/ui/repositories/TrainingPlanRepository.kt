@@ -1,5 +1,6 @@
 package com.example.trainingplanner.ui.repositories
 
+import com.example.trainingplanner.ui.models.DayInfo
 import com.example.trainingplanner.ui.models.Member
 import com.example.trainingplanner.ui.models.TrainingPlan
 import com.google.firebase.firestore.FieldValue
@@ -8,6 +9,7 @@ import com.google.firebase.firestore.toObject
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.tasks.await
 import java.time.LocalDate
+import java.time.temporal.ChronoUnit
 
 object TrainingPlanRepository {
     private var trainingPlanCache = TrainingPlan()
@@ -31,6 +33,7 @@ object TrainingPlanRepository {
         description: String,
         startDate: LocalDate,
         eventDate: LocalDate,
+        daysOfWeek: List<DayInfo>
     ): TrainingPlan {
         // create trainingPlan document from code
         val code = generateRandomCode(6)    // TODO: could check for repeat code
@@ -53,14 +56,18 @@ object TrainingPlanRepository {
         // create workout list for time period
         var currentDate = startDate
         while (currentDate.isBefore(eventDate) || currentDate.isEqual(eventDate)) {
+            val i = currentDate.dayOfWeek.value - 1
+            val week = ChronoUnit.WEEKS.between(startDate, currentDate).toInt()
+            var amount = daysOfWeek[i].startAmount.toFloat()
+            amount += (week / daysOfWeek[i].stepFrequency.toInt()) * daysOfWeek[i].stepAmount.toFloat()
             WorkoutsRepository.createWorkout(
                 code,
                 currentDate,
-                2,
-                "mile",
-                "run",
-                "go fast",
-                false
+                amount,
+                daysOfWeek[i].unit,
+                daysOfWeek[i].type,
+                "",
+                daysOfWeek[i].restDay
             )
             currentDate = currentDate.plusDays(1)
         }

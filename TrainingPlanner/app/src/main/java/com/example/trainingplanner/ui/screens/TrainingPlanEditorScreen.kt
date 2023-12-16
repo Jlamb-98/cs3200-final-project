@@ -88,15 +88,6 @@ fun TrainingPlanEditorScreen(navHostController: NavHostController) {
                 )
 
                 // Specify workout types for days of the week
-//                LazyColumn {
-//                    items(state.daysOfWeek) {dayInfo ->
-//                        DayEntry(dayInfo = dayInfo) { updatedDayInfo ->
-//                            state.daysOfWeek = state.daysOfWeek.toMutableList().apply {
-//                                this[indexOf(dayInfo)] = updatedDayInfo
-//                            }
-//                        }
-//                    }
-//                }
                 for (index in state.daysOfWeek.indices) {
                     DayEntry(dayInfo = state.daysOfWeek[index]) { updatedDayInfo ->
                         state.daysOfWeek = state.daysOfWeek.toMutableList().apply {
@@ -105,7 +96,7 @@ fun TrainingPlanEditorScreen(navHostController: NavHostController) {
                     }
                 }
 
-                // Buttons and error message
+                // Button and error message
                 Row(
                     horizontalArrangement = Arrangement.Center,
                     modifier = Modifier.fillMaxWidth()

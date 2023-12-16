@@ -29,7 +29,7 @@ object WorkoutsRepository {
     suspend fun createWorkout(
         trainingPlanCode: String,
         date: LocalDate,
-        amount: Int,
+        amount: Float,
         unit: String,
         type: String,
         description: String,

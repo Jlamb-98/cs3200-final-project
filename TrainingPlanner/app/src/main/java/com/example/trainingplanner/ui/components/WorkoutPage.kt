@@ -84,7 +84,7 @@ fun CreatedWorkoutPagePreview() {
         WorkoutPage(
             workout = Workout(
                 date = "2000-01-02",
-                amount = 2,
+                amount = 2f,
                 unit = "mile",
                 type = "run",
                 description = "go on a 4 mile run",
